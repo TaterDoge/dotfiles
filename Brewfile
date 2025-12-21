@@ -4,13 +4,7 @@ brew "fish"
 brew "starship"
 # 雄心勃勃的 Vim-fork 专注于可扩展性和敏捷性
 brew "neovim"
-# 窗口管理器
-brew "nikitabobko/tap/aerospace"
 # 平铺窗口管理器
-# brew "koekeishiya/formulae/yabai"
-# 快捷键管理工具
-# brew "koekeishiya/formulae/skhd"
-# 额外的状态栏
 brew "felixkratz/formulae/sketchybar"
 # 编写的超快终端文件管理器
 brew "yazi"
@@ -24,44 +18,44 @@ brew "mise"
 brew "fzf"
 # 轻量级灵活的命令行 JSON 处理器
 brew "jq"
+# tree-sitter 语法解析
+brew "tree-sitter"
+brew "tree-sitter-cli"
 # 用于 git 命令的简单终端 UI
 brew "lazygit"
-# 终端 docker gui工具
-brew "lazydocker"
 # 搜索工具，如 grep 和 The Silver Searcher
 brew "ripgrep"
 brew "zoxide"
 # ls 增强
 brew "lsd"
-# 可插拔终端工作区，以终端复用器为基本功能
-# brew "zellij"
-# 网络流量监控工具
-brew "ifstat"
-# 管理flutter版本工具
-brew "leoafarias/fvm/fvm"
+# uv
+brew "uv"
 
 # 字体
 cask "font-maple-mono-nf-cn"
 
+# 代理软件
+cask "clash-party"
+# 屏幕窗口管理
+cask "nikitabobko/tap/aerospace"
 # claude code 切换
-cask "cc-switch"
+cask "farion1231/ccswitch/cc-switch"
 # 阻止commnad + Q 立即退出
 cask "commandq"
 # 屏幕控制
 cask "monitorcontrol"
 # 浏览器
-cask "arc"
-# visual-studio-code
-cask "visual-studio-code"
+cask "chatgpt-atlas"
 # 开关统一管理
 cask "only-switch"
 # 用于文本翻译和识别的软件
 cask "easydict"
 # 终端模拟器
 cask "kitty"
+cask "tabby"
 # 文件管理器
 # neovim GUI客户端
-cask "neovide"
+cask "neovide-app"
 # api测试工具
 cask "apifox"
 # 文件管理器
@@ -70,10 +64,8 @@ cask "qspace-pro"
 cask "rustdesk"
 # 音视频播放器
 cask "iina"
-# 柠檬清理
-cask "tencent-lemon"
-# Plug-in productivity tool set
-cask "utools"
+# 系统清理
+cask "pearcleaner"
 # 微信
 cask "wechat"
 # 微信开发者工具
@@ -86,13 +78,10 @@ cask "expo-orbit"
 cask "orbstack"
 # figma
 cask "figma"
+# 微信输入法
+cask "wetype"
 # 输入法自动切换
 cask "input-source-pro"
 cask "Jackiexiao/tap/macvimswitch"
 # agent工具
 cask "cherry-studio"
-
-# 终端下载AppStore应用
-brew "mas"
-mas "iShot", id: 1485844094
-mas "Xcode", id: 497799835
