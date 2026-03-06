@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Keybinding wrapper for updating plugins
+
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BIN_DIR="$CURRENT_DIR/../bin"
+
+# Run the update command and wait for user to review results
+"$BIN_DIR/update"
+
+echo ""
+echo "press ENTER to close this pane"
+read -r
+
+# Always exit with 0 to prevent tmux error messages
+# The update command's exit code is informational only
+exit 0
+

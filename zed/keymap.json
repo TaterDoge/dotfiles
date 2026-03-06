@@ -1,0 +1,71 @@
+[
+  // 不限作用域
+  {
+    "bindings": {
+      // 导航到上一个 Tab
+      "shift-h": "pane::ActivatePreviousItem",
+      // 导航到下一个 Tab
+      "shift-l": "pane::ActivateNextItem",
+    },
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      // 保存文件
+      "ctrl-s": "workspace::Save",
+    },
+  },
+  {
+    "context": "VimControl",
+    "bindings": {
+      // 光标移动到行首 "space h": "vim::StartOfLine",
+      "space h": "vim::StartOfLine",
+      // 光标移动到行尾
+      "space l": "vim::EndOfLine",
+      // 光标向下移动 5 行
+      "shift-j": ["editor::MoveDownByLines", { "lines": 5 }],
+      // 光标向下移动 5 行
+      "shift-k": ["editor::MoveUpByLines", { "lines": 5 }],
+    },
+  },
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      // 查找文件
+      "space space": [
+        "task::Spawn",
+        {
+          "task_name": "File Finder",
+          "reveal_target": "center",
+        },
+      ],
+      // 查找文件内容
+      "space /": [
+        "task::Spawn",
+        {
+          "task_name": "Find in Files",
+          "reveal_target": "center",
+        },
+      ],
+    },
+  },
+  {
+    "context": "vim_mode == insert", // 在插入模式下
+    "bindings": {
+      "j k": "vim::NormalBefore", // 将jk组合键映射为退出当前模式并进入普通模式。
+      "ctrl-h": "vim::Left",
+      "ctrl-j": "vim::Down",
+      "ctrl-k": "vim::Up",
+      "ctrl-l": "vim::Right",
+    },
+  },
+  {
+    "context": "vim_mode == visual", // 在视觉模式下
+    "bindings": {
+      // 光标向下移动 5 行
+      "shift-j": ["editor::MoveDownByLines", { "lines": 5 }],
+      // 光标向下移动 5 行
+      "shift-k": ["editor::MoveUpByLines", { "lines": 5 }],
+    },
+  },
+]

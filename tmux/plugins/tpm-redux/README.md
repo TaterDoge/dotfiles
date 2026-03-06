@@ -1,0 +1,299 @@
+# TPM Redux
+
+> A lightweight, performant reimplementation of the Tmux Plugin Manager
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## Overview
+
+TPM Redux is a modern, performance-focused reimplementation of [TPM (Tmux Plugin Manager)](https://github.com/tmux-plugins/tpm) with 100% backwards compatibility. It maintains the same plugin format and API while providing a cleaner codebase, comprehensive test coverage, and a foundation for enhanced features.
+
+### Why TPM Redux?
+
+- 🚀 **Drop-in replacement** - Works with your existing `.tmux.conf`, no changes needed
+- ✅ **Well-tested** - 93 tests covering all functionality
+- 📦 **Modern codebase** - Clean, maintainable bash with proper error handling
+- 🔄 **Active development** - Built with future enhancements in mind
+- 📖 **Comprehensive docs** - Clear installation and usage instructions
+
+<a href='https://ko-fi.com/X7X41PCTS3' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi5.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
+## Status
+
+🎉 **v1.1.3 - Stable** - Production ready with 100% TPM feature parity!
+
+## Features
+
+### Core Functionality
+- ✅ **Plugin installation** - Install plugins with `prefix + I`
+- ✅ **Plugin updates** - Update all plugins with `prefix + U`
+- ✅ **Plugin cleanup** - Remove unused plugins with `prefix + Alt+u`
+- ✅ **Automatic plugin sourcing** - Plugins load automatically on tmux start
+- ✅ **All TPM config formats** - GitHub shorthand, full URLs, SSH, branches
+- ✅ **XDG config support** - Works with both `~/.tmux.conf` and `~/.config/tmux/tmux.conf`
+- ✅ **Branch specification** - Install specific versions with `user/repo#branch`
+- ✅ **100% TPM compatible** - Drop-in replacement for existing TPM installations
+- ✅ **93 passing tests** - Comprehensive test coverage
+- ✅ **Commit display UI** - See what changed in updated plugins with commit hashes, messages, and relative times (inspired by lazy.nvim)
+
+### Enhanced Features (Coming Soon)
+- Parallel plugin operations for faster installs/updates
+- Plugin search and discovery
+- Lock file support for reproducible installations
+
+## Requirements
+
+- tmux 1.9 or higher
+- git
+- bash
+
+## Installation
+
+### Quick Install
+
+Clone TPM Redux to your tmux plugins directory:
+
+```bash
+git clone https://github.com/RyanMacG/tpm-redux.git ~/.tmux/plugins/tpm-redux
+```
+
+### Configure tmux
+
+Add this to the **bottom** of `~/.tmux.conf` (or `~/.config/tmux/tmux.conf`):
+
+```bash
+# List your plugins
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-yank'
+
+# Initialize TPM Redux (keep this line at the very bottom)
+run '~/.tmux/plugins/tpm-redux/tpm'
+```
+
+### Activate
+
+Reload tmux configuration:
+
+```bash
+# From inside tmux, press:
+#   prefix + :
+# Then type:
+#   source ~/.tmux.conf
+
+# Or from terminal:
+tmux source ~/.tmux.conf
+```
+
+### Install Plugins
+
+Inside tmux, press:
+```
+prefix + I
+```
+
+Your plugins will be cloned and loaded automatically!
+
+## Usage
+
+### Key Bindings
+
+All keybindings are fully functional:
+
+- `prefix + I` - **Install** new plugins and refresh tmux
+- `prefix + U` - **Update** all installed plugins
+- `prefix + Alt + u` - **Clean** unused plugins (removes plugins not in config)
+
+### Plugin Formats
+
+TPM Redux supports all TPM plugin formats:
+
+```bash
+# GitHub shorthand
+set -g @plugin 'tmux-plugins/tmux-sensible'
+
+# GitHub shorthand with branch
+set -g @plugin 'tmux-plugins/tmux-yank#v2.3.0'
+
+# GitHub shorthand with tag
+set -g @plugin 'tmux-plugins/tmux-yank#v2.3.0'
+
+# GitHub shorthand with commit hash (pin to specific version)
+set -g @plugin 'tmux-plugins/tmux-resurrect#abc1234'
+
+# Full git URL
+set -g @plugin 'https://github.com/tmux-plugins/tmux-sensible.git'
+
+# SSH URL
+set -g @plugin 'git@github.com:tmux-plugins/tmux-sensible.git'
+```
+
+**Version Pinning:**
+- **Branches**: `user/repo#branch-name` - Install from a specific branch
+- **Tags**: `user/repo#v1.0.0` - Install a specific tagged version
+- **Commit Hash**: `user/repo#abc1234` - Pin to an exact commit (7+ characters)
+
+### Configuration Options
+
+TPM Redux supports configuration via tmux options:
+
+```bash
+set -g @tpm-redux-max-commits '5'
+
+# Show all commits (unlimited)
+set -g @tpm-redux-max-commits 'all'
+
+# Disable commit display
+set -g @tpm-redux-max-commits '0'
+
+**Available Options:**
+- `@tpm-redux-max-commits` - Maximum number of commits to display when updating plugins (default: 2). Set to `'all'` to show all commits, or `'0'` to disable commit display.
+
+### Example Configuration
+
+```bash
+# ~/.tmux.conf
+
+# Basic settings
+set -g mouse on
+set -g default-terminal "screen-256color"
+
+# Plugins
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+
+# TPM Redux settings
+set -g @tpm-redux-max-commits '3'  # Show up to 3 commits in update display
+
+# Plugin settings (if any)
+set -g @resurrect-capture-pane-contents 'on'
+
+# Initialize TPM Redux (keep at bottom!)
+run '~/.tmux/plugins/tpm-redux/tpm'
+```
+
+### Manual Installation
+
+You can also install plugins from the command line:
+
+```bash
+# Install all plugins from config
+~/.tmux/plugins/tpm-redux/bin/install
+```
+
+## Troubleshooting
+
+### Plugins not installing?
+
+1. Check that git is installed: `git --version`
+2. Check tmux version: `tmux -V` (must be 1.9+)
+3. Verify TPM Redux is sourced in `.tmux.conf`
+4. Try reloading tmux: `tmux source ~/.tmux.conf`
+5. Check for errors: `tmux show-messages`
+
+### Where are plugins installed?
+
+By default: `~/.tmux/plugins/`
+
+If using XDG config: `~/.config/tmux/plugins/`
+
+### Manual installation not working?
+
+Run the install command directly to see errors:
+
+```bash
+~/.tmux/plugins/tpm-redux/bin/install
+```
+
+### Still having issues?
+
+Check the [tmux-plugins/tpm troubleshooting guide](https://github.com/tmux-plugins/tpm/blob/master/docs/tpm_not_working.md) - most solutions apply to TPM Redux too.
+
+## Development
+
+### Testing
+
+We use [bats-core](https://github.com/bats-core/bats-core) for testing:
+
+```bash
+# Run all tests
+./run_tests.sh
+
+# Run specific test file
+./run_tests.sh tests/core_test.bats
+```
+
+Current test coverage: **93 passing tests** (100% of implemented features)
+
+### Contributing
+
+We follow TDD principles with all tests passing before committing. All contributions should:
+- Include comprehensive tests
+- Maintain 100% backwards compatibility with TPM
+- Follow existing code style
+- Update documentation as needed
+
+See test files in `tests/` for examples.
+
+## Compatibility
+
+TPM Redux aims for 100% compatibility with TPM, supporting:
+- All plugin name formats (`user/repo`, `user/repo#branch`, full Git URLs)
+- Standard plugin directory structure (`~/.tmux/plugins/`)
+- Plugin execution via `*.tmux` files
+- XDG config paths
+- Same environment variables and keybindings
+
+## Migration from TPM
+
+TPM Redux is designed as a drop-in replacement for TPM. Migration is simple:
+
+1. **Backup** (optional): `cp -r ~/.tmux/plugins/tpm ~/.tmux/plugins/tpm.backup`
+2. **Replace**: `rm -rf ~/.tmux/plugins/tpm && git clone https://github.com/RyanMacG/tpm-redux.git ~/.tmux/plugins/tpm`
+3. **Or run alongside**: Keep TPM as `tpm` and install TPM Redux as `tpm-redux`
+
+No configuration changes needed - your existing `.tmux.conf` works as-is!
+
+## Release Notes
+
+### v1.1.3 (Current)
+- 🐛 Fix: Handle quoted tilde in TPM path (#27)
+  - TMUX_PLUGIN_MANAGER_PATH now correctly expands when set with single quotes
+  - Manual tilde expansion for quoted paths (e.g., `export TMUX_PLUGIN_MANAGER_PATH='~/.tmux/plugins'`)
+  - Improved test isolation by preventing XDG environment variable inheritance
+  - Fixed test failure in update_all_plugins with multiple plugins
+
+### v1.1.2
+- 🐛 Fix: Improved color detection for tmux popups
+  - Colors now work correctly in tmux popups with xterm-256color
+  - Fixed color detection when stdout is not a TTY
+  - Binding script always exits with 0 to prevent false error messages
+
+### v1.1.1
+- 🐛 Fix: Update command no longer returns error exit code for not-installed plugins
+  - Only actual update failures now result in non-zero exit code
+  - Prevents false error messages in tmux
+
+### v1.1.0
+- ✅ Commit display UI - Shows commit information for updated plugins
+  - Displays commit hashes, messages, and relative times
+  - Colourised output (green for updated, yellow for up-to-date, red for errors)
+  - Shows all new commits since last update
+  - Inspired by lazy.nvim's commit display
+- ✅ 93 comprehensive tests (added 9 new tests for commit display features)
+
+### v1.0.0
+- ✅ Complete TPM feature parity
+- ✅ All core commands implemented (install, update, clean)
+- ✅ 84 comprehensive tests
+- ✅ Full backwards compatibility
+- ✅ Production ready
+
+## License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+Inspired by and compatible with [TPM](https://github.com/tmux-plugins/tpm) by Bruno Sutic and contributors.
+

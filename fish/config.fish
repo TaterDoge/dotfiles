@@ -76,7 +76,17 @@ if status is-interactive
     alias pb="pnpm run build"
     alias ps="pnpm run start"
 
+    # bun 别名
+    alias bi="bun run install"
+    alias bd="bun run dev"
+    alias bb="bun run build"
+    alias bs="bun run start"
+
     # 添加homebrew的环境路径
     set -gx PATH /opt/homebrew/bin $PATH
     set -gx PATH /opt/homebrew/sbin $PATH
 end
+
+# Added by OrbStack: command-line tools and integration
+# This won't be added again if you remove it.
+source ~/.orbstack/shell/init2.fish 2>/dev/null || :

@@ -1,169 +1,256 @@
-# pyright: reportMissingImports=false
-from datetime import datetime
-from kitty.boss import get_boss
-from kitty.fast_data_types import Screen, add_timer, get_options
-from kitty.utils import color_as_int
+from enum import Enum
+from typing import Callable
+from kitty.fast_data_types import Screen, add_timer, get_boss, get_options
 from kitty.tab_bar import (
-    DrawData,
-    ExtraData,
-    Formatter,
-    TabBarData,
-    as_rgb,
-    draw_attributed_string,
-    draw_title,
+    DrawData, TabBarData, ExtraData, TabAccessor, as_rgb
 )
+from kitty.utils import color_as_int
+import os
+import datetime
+from pathlib import Path
 
 opts = get_options()
-icon_fg = as_rgb(color_as_int(opts.color16))
-icon_bg = as_rgb(color_as_int(opts.color8))
-bat_text_color = as_rgb(color_as_int(opts.color15))
-clock_color = as_rgb(color_as_int(opts.color15))
-date_color = as_rgb(color_as_int(opts.color8))
-SEPARATOR_SYMBOL, SOFT_SEPARATOR_SYMBOL = ("", "")
-RIGHT_MARGIN = 1
-REFRESH_TIME = 1
-ICON = "  "
-UNPLUGGED_ICONS = {
-    10: "",
-    20: "",
-    30: "",
-    40: "",
-    50: "",
-    60: "",
-    70: "",
-    80: "",
-    90: "",
-    100: "",
-}
-PLUGGED_ICONS = {
-    1: "",
-}
-UNPLUGGED_COLORS = {
-    15: as_rgb(color_as_int(opts.color1)),
-    16: as_rgb(color_as_int(opts.color15)),
-}
-PLUGGED_COLORS = {
-    15: as_rgb(color_as_int(opts.color1)),
-    16: as_rgb(color_as_int(opts.color6)),
-    99: as_rgb(color_as_int(opts.color6)),
-    100: as_rgb(color_as_int(opts.color2)),
-}
 
+BG = as_rgb(color_as_int(opts.background))
+FG = as_rgb(color_as_int(opts.foreground))
+COLOR_1 = as_rgb(color_as_int(opts.color1))
+COLOR_2 = as_rgb(color_as_int(opts.color2))
+COLOR_3 = as_rgb(color_as_int(opts.color3))
+COLOR_4 = as_rgb(color_as_int(opts.color4))
 
-def _draw_icon(screen: Screen, index: int) -> int:
-    if index != 1:
-        return 0
-    fg, bg = screen.cursor.fg, screen.cursor.bg
-    screen.cursor.fg = icon_fg
-    screen.cursor.bg = icon_bg
-    screen.draw(ICON)
-    screen.cursor.fg, screen.cursor.bg = fg, bg
-    screen.cursor.x = len(ICON)
-    return screen.cursor.x
+REFRESH_TIME = 15
+MAX_LENGTH_PATH = 3
 
+folder_icon = " "
+time_icon = "󰥔 "
+session_icon = " "
 
-def _draw_left_status(
-    draw_data: DrawData,
-    screen: Screen,
-    tab: TabBarData,
-    before: int,
-    max_title_length: int,
-    index: int,
-    is_last: bool,
-    extra_data: ExtraData,
-) -> int:
-    if screen.cursor.x >= screen.columns - right_status_length:
-        return screen.cursor.x
-    tab_bg = screen.cursor.bg
-    tab_fg = screen.cursor.fg
-    default_bg = as_rgb(int(draw_data.default_bg))
-    if extra_data.next_tab:
-        next_tab_bg = as_rgb(draw_data.tab_bg(extra_data.next_tab))
-        needs_soft_separator = next_tab_bg == tab_bg
+class Cell:
+    def __init__(
+        self,
+        icon: str,
+        text_fn: Callable[[int, TabBarData], str | None],
+        tab: TabBarData = None,
+        bg: str = BG,
+        fg: str = FG,
+        color: int = COLOR_1,
+        separator: str = "",
+        border: tuple[str, str] = ("",""),
+    ) -> None:
+        
+        self.tab: TabBarData = tab
+        self.fg: str = fg
+        self.bg: str = bg
+        self.color: int = color
+        self.icon: str = icon
+        self.text_fn: Callable[[int, TabBarData], str | None] = text_fn
+        self.border: tuple[str, str] = border
+        self.separator: str = separator
+        self.text_length_overhead = len(self.border[0] + self.border[1] + self.separator + self.icon) + 1
+        
+    def draw(self, screen: Screen, max_size: int) -> None:
+        text = self.text_fn(max_size - self.text_length_overhead, self.tab)
+        
+        if text is None:
+            return
+
+        screen.cursor.dim = False
+        screen.cursor.bold = False
+        screen.cursor.italic = False
+        
+        screen.cursor.bg = 0 
+        screen.cursor.fg = self.color
+        screen.draw(self.border[0])
+
+        screen.cursor.bg = self.color
+        screen.cursor.fg = self.bg
+        screen.cursor.bold = True
+        screen.draw(self.icon)
+        screen.cursor.bold = False
+        
+        if text == "":
+            screen.cursor.bg = 0
+            screen.cursor.fg = self.color
+            screen.draw(self.border[1])
+        else:
+            screen.cursor.bg = self.bg
+            screen.cursor.fg = self.color
+            screen.draw(self.separator)
+            
+            screen.cursor.fg = self.fg
+            screen.draw(f" {text}")
+            
+            screen.cursor.fg = self.bg
+            screen.cursor.bg = 0
+            screen.draw(self.border[1])
+            
+    def length(self, max_size: int) -> int:
+        text = self.text_fn(max_size - self.text_length_overhead, self.tab)
+        
+        if text is None:
+            return 0
+        elif text ==  "":
+            return len(self.icon + self.border[0] + self.border[1])
+        else:
+            return len(text) + self.text_length_overhead
+
+def get_wd(max_size: int, tab: TabBarData):
+    accessor = TabAccessor(tab.tab_id)
+
+    wd = Path(accessor.active_wd)
+    home = Path(os.getenv('HOME'))
+
+    if wd.is_relative_to(home):
+        wd = wd.relative_to(home)
+
+        if wd == home:
+            wd = Path("~")
+        else:
+            wd = Path("~") / wd
+    
+    parts = list(wd.parts)
+    compressed = False
+    if len(parts) > MAX_LENGTH_PATH:
+        compressed = True
+        parts = [parts[0], ".."] + parts[-MAX_LENGTH_PATH:]
+
+    parts_cnt = 1 + compressed
+    while parts_cnt != len(parts):
+        wd = "/".join(parts[0:1+compressed] + parts[parts_cnt:])
+        if len(wd) <= max_size:
+            return wd
+        parts_cnt += 1
+    
+    if len(parts[-1]) <= max_size:
+        return parts[-1]
+
+    return None
+
+def get_time(max_size: int, tab: TabBarData) -> str | None:
+    if max_size < 5:
+        return None
     else:
-        next_tab_bg = default_bg
-        needs_soft_separator = False
-    if screen.cursor.x <= len(ICON):
-        screen.cursor.x = len(ICON)
-    screen.draw(" ")
-    screen.cursor.bg = tab_bg
-    draw_title(draw_data, screen, tab, index)
-    if not needs_soft_separator:
-        screen.draw(" ")
-        screen.cursor.fg = tab_bg
-        screen.cursor.bg = next_tab_bg
-        screen.draw(SEPARATOR_SYMBOL)
+        return datetime.datetime.now().strftime("%H:%M")
+
+def get_tab(max_size: int, tab: TabBarData) -> str | None:
+    accessor = TabAccessor(tab.tab_id)
+
+    if tab.title[0] == "#":
+        text = tab.title[1:]
     else:
-        prev_fg = screen.cursor.fg
-        if tab_bg == tab_fg:
-            screen.cursor.fg = default_bg
-        elif tab_bg != default_bg:
-            c1 = draw_data.inactive_bg.contrast(draw_data.default_bg)
-            c2 = draw_data.inactive_bg.contrast(draw_data.inactive_fg)
-            if c1 < c2:
-                screen.cursor.fg = default_bg
-        screen.draw(" " + SOFT_SEPARATOR_SYMBOL)
-        screen.cursor.fg = prev_fg
-    end = screen.cursor.x
-    return end
+        text = str(accessor.active_exe)
+    
+    if max_size <= len(text):
+        return ""
+    else:
+        return text
+
+def get_session(max_size: int, tab: TabBarData) -> str | None:
+    text = tab.session_name
+    if text == "":
+        text = "none"
+    if len(text) <= max_size:
+        return text
+    elif max_size >= 3:
+        return text[:3]
+    else:
+        return None
+
+def get_tab_cell(tab: TabBarData) -> Cell:
+    color = COLOR_2 if tab.is_active else COLOR_1
+    return Cell(str(tab.tab_id), get_tab, tab, color=color)
 
 
-def _draw_right_status(screen: Screen, is_last: bool, cells: list) -> int:
-    if not is_last:
-        return 0
-    draw_attributed_string(Formatter.reset, screen)
-    screen.cursor.x = screen.columns - right_status_length
-    screen.cursor.fg = 0
-    for color, status in cells:
-        screen.cursor.fg = color
-        screen.draw(status)
-    screen.cursor.bg = 0
-    return screen.cursor.x
-
-
-def _redraw_tab_bar(_):
+def redraw_tab_bar(_):
     tm = get_boss().active_tab_manager
     if tm is not None:
         tm.mark_tab_bar_dirty()
 
-
-def get_battery_cells() -> list:
-    try:
-        with open("/sys/class/power_supply/BAT0/status", "r") as f:
-            status = f.read()
-        with open("/sys/class/power_supply/BAT0/capacity", "r") as f:
-            percent = int(f.read())
-        if status == "Discharging\n":
-            # TODO: declare the lambda once and don't repeat the code
-            icon_color = UNPLUGGED_COLORS[
-                min(UNPLUGGED_COLORS.keys(), key=lambda x: abs(x - percent))
-            ]
-            icon = UNPLUGGED_ICONS[
-                min(UNPLUGGED_ICONS.keys(), key=lambda x: abs(x - percent))
-            ]
-        elif status == "Not charging\n":
-            icon_color = UNPLUGGED_COLORS[
-                min(UNPLUGGED_COLORS.keys(), key=lambda x: abs(x - percent))
-            ]
-            icon = PLUGGED_ICONS[
-                min(PLUGGED_ICONS.keys(), key=lambda x: abs(x - percent))
-            ]
-        else:
-            icon_color = PLUGGED_COLORS[
-                min(PLUGGED_COLORS.keys(), key=lambda x: abs(x - percent))
-            ]
-            icon = PLUGGED_ICONS[
-                min(PLUGGED_ICONS.keys(), key=lambda x: abs(x - percent))
-            ]
-        percent_cell = (bat_text_color, str(percent) + "% ")
-        icon_cell = (icon_color, icon)
-        return [percent_cell, icon_cell]
-    except FileNotFoundError:
-        return []
-
-
 timer_id = None
-right_status_length = -1
+
+center: list[Cell] = []
+active_index = 1
+
+class CenterStrategy(Enum):
+    EXPAND_ALL = 0
+    EXPAND_ACTIVE = 1
+    NO_EXPAND = 2
+    SHOW_ACTIVE = 3
+    SHOW_ACTIVE_NO_EXPAND = 4
+
+def center_strategy(screen: Screen) -> tuple[CenterStrategy, int]:
+    n_cells = len(center)
+    
+    length = n_cells - 1 + sum(map(lambda x: x.length(screen.columns), center))
+    if length < screen.columns:
+        return CenterStrategy.EXPAND_ALL, length
+
+    length = n_cells - 1
+    for index, cell in enumerate(center):
+        if index == active_index:
+            length += cell.length(screen.columns)
+        else:
+            length += cell.length(0) 
+    if length < screen.columns:
+        return CenterStrategy.EXPAND_ACTIVE, length
+
+    length = n_cells - 1+ sum(map(lambda x: x.length(0), center))
+    if length < screen.columns:
+        return CenterStrategy.NO_EXPAND, length
+
+    length = center[active_index].length(screen.columns)
+    if length < screen.columns:
+        return CenterStrategy.SHOW_ACTIVE, length
+
+    return CenterStrategy.SHOW_ACTIVE_NO_EXPAND, center[active_index].length(0)
+
+def draw_center(screen: Screen, strategy: CenterStrategy):
+
+    match strategy:
+        case CenterStrategy.EXPAND_ALL:
+            for idx, cell in enumerate(center):
+                if idx != 0:
+                    screen.draw(" ")
+                cell.draw(screen, screen.columns)
+
+        case CenterStrategy.EXPAND_ACTIVE:
+            for idx, cell in enumerate(center):
+                if idx != 0:
+                    screen.draw(" ")
+                cell.draw(screen, screen.columns * (idx == active_index))
+        case CenterStrategy.NO_EXPAND:
+            for idx, cell in enumerate(center):
+                if idx != 0:
+                    screen.draw(" ")
+                cell.draw(screen, 0)
+        case CenterStrategy.SHOW_ACTIVE:
+            center[active_index].draw(screen, screen.columns)
+        case CenterStrategy.SHOW_ACTIVE_NO_EXPAND:
+            center[active_index].draw(screen, 0)
+
+def draw_left(screen: Screen, max_length: int):
+    cell = Cell(folder_icon, get_wd, center[active_index].tab, color=COLOR_4)
+    cell.draw(screen, max_length)
+
+def draw_right(screen: Screen):
+    max_size = screen.columns - screen.cursor.x
+    time_cell = Cell(time_icon, get_time, color=COLOR_3)
+    session_cell = Cell(session_icon, get_session, center[active_index].tab, color=COLOR_3)
+
+    total_length = time_cell.length(max_size)
+    session_length = session_cell.length(max_size - total_length - 1)
+
+    if session_length != 0:
+        total_length += 1 + session_length
+
+    offset_length = max_size - total_length
+    screen.draw(" " * offset_length)
+
+    if session_length != 0:
+        session_cell.draw(screen, session_length)
+        screen.draw(" ")
+
+    time_cell.draw(screen, max_size)
 
 def draw_tab(
     draw_data: DrawData,
@@ -175,33 +262,28 @@ def draw_tab(
     is_last: bool,
     extra_data: ExtraData,
 ) -> int:
+    global center
     global timer_id
-    global right_status_length
-    if timer_id is None:
-        timer_id = add_timer(_redraw_tab_bar, REFRESH_TIME, True)
-    clock = datetime.now().strftime(" %H:%M")
-    date = datetime.now().strftime(" %d.%m.%Y")
-    cells = get_battery_cells()
-    cells.append((clock_color, clock))
-    cells.append((date_color, date))
-    right_status_length = RIGHT_MARGIN
-    for cell in cells:
-        right_status_length += len(str(cell[1]))
+    global active_index
 
-    _draw_icon(screen, index)
-    _draw_left_status(
-        draw_data,
-        screen,
-        tab,
-        before,
-        max_title_length,
-        index,
-        is_last,
-        extra_data,
-    )
-    _draw_right_status(
-        screen,
-        is_last,
-        cells,
-    )
+    if timer_id is None:
+        timer_id = add_timer(redraw_tab_bar, REFRESH_TIME, True)
+    if tab.is_active:
+        active_index = index - 1
+
+    center.append(get_tab_cell(tab))
+
+    # Draw everything on the last tab
+    if is_last:
+        strategy, length = center_strategy(screen)
+        
+        center_start_position = (screen.columns - length) // 2
+        draw_left(screen, center_start_position - 1)
+
+        screen.cursor.x = center_start_position
+        draw_center(screen, strategy)
+        screen.draw(" ")
+
+        draw_right(screen)
+        center = []
     return screen.cursor.x

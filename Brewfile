@@ -30,6 +30,10 @@ brew "zoxide"
 brew "lsd"
 # uv
 brew "uv"
+# Docker 容器管理 TUI
+brew "lazydocker"
+# 现代终端复用器
+brew "zellij"
 
 # 字体
 cask "font-maple-mono-nf-cn"
@@ -38,34 +42,27 @@ cask "font-maple-mono-nf-cn"
 cask "clash-party"
 # 屏幕窗口管理
 cask "nikitabobko/tap/aerospace"
-# claude code 切换
-cask "farion1231/ccswitch/cc-switch"
+
 # 阻止commnad + Q 立即退出
 cask "commandq"
-# 屏幕控制
-cask "monitorcontrol"
 # 浏览器
 cask "chatgpt-atlas"
-# 开关统一管理
-cask "only-switch"
 # 用于文本翻译和识别的软件
 cask "easydict"
 # 终端模拟器
 cask "kitty"
-cask "tabby"
-# 文件管理器
+# Raycast 启动器
+cask "raycast"
+# ai对话工具
+cask "cherry-studio"
 # neovim GUI客户端
 cask "neovide-app"
 # api测试工具
 cask "apifox"
 # 文件管理器
 cask "qspace-pro"
-# 远程桌面
-cask "rustdesk"
 # 音视频播放器
 cask "iina"
-# 系统清理
-cask "pearcleaner"
 # 微信
 cask "wechat"
 # 微信开发者工具
@@ -78,8 +75,6 @@ cask "expo-orbit"
 cask "orbstack"
 # figma
 cask "figma"
-# 微信输入法
-cask "wetype"
 # 输入法自动切换
 cask "input-source-pro"
 cask "Jackiexiao/tap/macvimswitch"
