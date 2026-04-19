@@ -33,8 +33,8 @@ Snacks.keymap.set("v", "<leader>l", "$", { desc = "跳转到行尾" })
 Snacks.keymap.set("n", "<leader>sa", "<cmd>:w<cr>", { desc = "保存文件" })
 
 -- accelerated-jk 加速jk移动
-Snacks.keymap.set("n", "j", "<Plug>(accelerated_jk_gj)")
-Snacks.keymap.set("n", "k", "<Plug>(accelerated_jk_gk)")
+Snacks.keymap.set("n", "j", "<Plug>(faster_move_gj)")
+Snacks.keymap.set("n", "k", "<Plug>(faster_move_gk)")
 Snacks.keymap.set({ "n", "v" }, "<S-j>", "5j")
 Snacks.keymap.set({ "n", "v" }, "<S-k>", "5k")
 
@@ -52,6 +52,26 @@ Snacks.keymap.set("i", "jk", "<Esc>")
 Snacks.keymap.set("n", "<leader>bD", function()
   Snacks.bufdelete.all()
 end, { desc = "删除所有buffer" })
+
+-- Opencode 快速插入当前文件（推荐快捷键）
+local function copy_file_mention()
+  local filepath = vim.fn.fnamemodify(vim.fn.expand("%"), ":.")
+  local mode = vim.fn.mode()
+  local mention = "@" .. filepath
+
+  if mode == "v" or mode == "V" then
+    local s_row, e_row = unpack(utils.get_range())
+    local line_range = s_row == e_row and tostring(s_row) or (s_row .. "-" .. e_row)
+    local selected_text = utils.get_text(mode)
+    mention = string.format("%s:%s %s", mention, line_range, selected_text)
+  end
+
+  vim.fn.setreg("+", mention)
+  vim.notify("✅ 已复制到剪贴板：" .. mention, vim.log.levels.INFO, { title = "file path快捷复制" })
+end
+
+vim.keymap.set("n", "<leader>cp", copy_file_mention, { desc = "快速获取当前文件 @提及" })
+vim.keymap.set("x", "<leader>cp", copy_file_mention, { desc = "快速获取当前文件 @提及和选区" })
 
 ------------------
 --- LSP

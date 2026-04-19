@@ -1,6 +1,7 @@
 # catppuccin-mocha iceberg-dark rose-pine rose-pine-dawn rose-pine-moon
 # theme = Catppuccin Mocha
-theme = Ayu Light
+# theme = Ayu
+theme = Dracula
 
 font-family = "Maple Mono NF CN"
 font-style = Italic
@@ -14,8 +15,8 @@ macos-titlebar-style = transparent
 macos-option-as-alt = true
 
 # 键位绑定
-keybind = cmd+shift+h=previous_tab
-keybind = cmd+shift+l=next_tab
+keybind = cmd+shift+h=unbind
+keybind = cmd+shift+l=unbind
 keybind = cmd+enter=new_tab
 keybind = cmd+h=unbind
 keybind = cmd+j=unbind

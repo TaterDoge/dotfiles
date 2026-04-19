@@ -1,5 +1,6 @@
 if status is-interactive
     # Commands to run in interactive sessions can go here
+    set -gx PATH /opt/nanobrew/prefix/bin/ $PATH
 
     # 加载环境变量文件（如果存在）
     if test -f ~/.config/fish/.env
@@ -28,6 +29,7 @@ if status is-interactive
 
     # rust 环境变量
     set -gx PATH $HOME/.cargo/bin $PATH
+    set -gx PATH $HOME/.local/bin $PATH
 
     # 添加pkg-config的环境路径
     set -gx PKG_CONFIG_PATH /opt/homebrew/opt/ruby/lib/pkgconfig
@@ -40,8 +42,11 @@ if status is-interactive
     set -gx PATH $HOME/.bun/bin $PATH
 
     # 配置安卓环境
-    set -gx PATH $HOME/Library/Android/sdk/platform-tools $PATH
-    set -gx PATH $HOME/Library/Android/sdk/tools $PATH
+    set -gx JAVA_HOME /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+    set -gx ANDROID_HOME $HOME/Library/Android/sdk
+    set -gx PATH $ANDROID_HOME/platform-tools $PATH
+    set -gx PATH $ANDROID_HOME/emulator $PATH
+    set -gx PATH $ANDROID_HOME/tools $PATH
 
     # mise 包管理工具
     mise activate fish | source
@@ -58,6 +63,76 @@ if status is-interactive
         rm -f -- "$tmp"
     end
 
+    function update
+        nb upgrade
+        and mise upgrade
+        and bun update --global --latest
+    end
+
+    # Docker Compose 批量升级
+    # 用法: dcu          — 升级 ~/docker/ 下所有服务
+    #       dcu s1 s2    — 仅升级指定服务
+    function dcu
+        set -l docker_root ~/docker
+
+        if not command -q docker; or not docker info &>/dev/null
+            echo "⚠️  Docker 未运行，跳过容器升级"
+            return 0
+        end
+
+        # 收集待升级的服务目录
+        set -l services
+        if test (count $argv) -gt 0
+            # 指定了服务名，验证目录是否存在
+            for svc in $argv
+                set -l svc_dir "$docker_root/$svc"
+                if test -f "$svc_dir/docker-compose.yml"
+                    set -a services $svc_dir
+                else
+                    echo "⚠️  跳过 $svc: 未找到 $svc_dir/docker-compose.yml"
+                end
+            end
+        else
+            # 自动发现所有服务
+            for compose_file in $docker_root/*/docker-compose.yml
+                set -a services (path dirname $compose_file)
+            end
+        end
+
+        if test (count $services) -eq 0
+            echo "📭 没有找到需要升级的 Docker 服务"
+            return 0
+        end
+
+        echo "🐳 准备升级 "(count $services)" 个 Docker 服务..."
+        set -l failed 0
+
+        for svc_dir in $services
+            set -l svc_name (path basename $svc_dir)
+            echo ""
+            echo "━━━ 🔄 升级 $svc_name ━━━"
+
+            if docker compose -f "$svc_dir/docker-compose.yml" pull
+                and docker compose -f "$svc_dir/docker-compose.yml" up -d
+                echo "✅ $svc_name 升级完成"
+            else
+                echo "❌ $svc_name 升级失败"
+                set failed (math $failed + 1)
+            end
+        end
+
+        echo ""
+        docker image prune -f
+        echo ""
+
+        if test $failed -eq 0
+            echo "🐳 全部服务升级完成"
+        else
+            echo "⚠️  $failed 个服务升级失败"
+            return 1
+        end
+    end
+
     # nvim 别名
     alias v="nvim"
     alias n="neovide"
@@ -69,6 +144,8 @@ if status is-interactive
     alias ls="lsd"
 
     alias cwd="pwd | pbcopy"
+
+    alias op="opencode"
 
     # pnpm 别名
     alias pi="pnpm run install"

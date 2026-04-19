@@ -1,4 +1,13 @@
 return {
+  {
+    "mrjones2014/smart-splits.nvim",
+    lazy = false,
+    keys = require("config.editor.smart-splits").keys,
+    opts = {
+      multiplexer_integration = "tmux",
+    },
+  },
+
   -- 代码格式化
   {
     "stevearc/conform.nvim",
@@ -13,9 +22,8 @@ return {
 
   -- 加速jk移动 https://github.com/rainbowhxch/accelerated-jk.nvim
   {
-    "rainbowhxch/accelerated-jk.nvim",
-    lazy = false,
-    opts = require("config.editor.accelerated-jk"),
+    "PHSix/faster.nvim",
+    event = { "VimEnter *" },
   },
 
   -- 多光标插件 https://github.com/mg979/vim-visual-multi
@@ -79,5 +87,18 @@ return {
       },
     },
     cmd = "FloatermToggle",
+  },
+
+  -- markdown 预览
+  {
+    "iamcco/markdown-preview.nvim",
+    keys = {
+      {
+        "<leader>mp",
+        ft = "markdown",
+        "<cmd>MarkdownPreviewToggle<cr>",
+        desc = "Markdown Preview",
+      },
+    },
   },
 }

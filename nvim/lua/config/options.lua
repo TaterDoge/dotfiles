@@ -4,8 +4,8 @@
 
 local opt = vim.opt
 
-opt.background = "light"
--- opt.background = "dark"
+-- opt.background = "light"
+opt.background = "dark"
 opt.pumblend = 0 -- !!! 补全菜单的透明度
 opt.winblend = 0
 -- opt.winborder = "rounded"
@@ -106,3 +106,8 @@ opt.paste = false
 opt.mousemoveevent = true -- 相应悬停事件
 -- opt.guicursor = "n-v:block-blinkon500-blinkoff500,i:ver25-blinkon500-blinkoff500" -- 控制光标的外观和行为
 -- opt.guicursor = "n-v-c:block-blinkon500-blinkoff500-blinkwait500"
+
+-- 强制使用 .git 作为项目根目录(解决 monorepo 问题)
+-- 将 .git 检测优先级提升到 LSP 之前,避免 LSP 根据 package.json 错误判断根目录
+vim.g.root_spec = { ".git", "lsp", "cwd" }
+vim.g.lazyvim_prettier_needs_config = true

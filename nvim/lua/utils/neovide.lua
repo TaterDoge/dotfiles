@@ -37,21 +37,18 @@ function M.config()
   vim.g.neovide_cursor_animate_command_line = true
   vim.g.neovide_alpha_composition = false
 
-  -- vim.keymap.set("v", "<D-c>", '"+y') -- Copy
-  -- vim.keymap.set("n", "<D-v>", '"+P') -- Paste normal mode
-  -- vim.keymap.set("t", "<D-v>", function()
-  --   vim.api.nvim_paste(vim.fn.getreg("+"), true, -1)
-  -- end, { desc = "Paste from system clipboard in terminal mode" })
-  -- vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
-  -- vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
-  -- vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
+  vim.keymap.set("n", "<D-s>", ":w<CR>") -- Save
+  vim.keymap.set("v", "<D-c>", '"+y') -- Copy
+  vim.keymap.set("n", "<D-v>", '"+P') -- Paste normal mode
+  vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
+  vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
+  vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
 
-  vim.keymap.set("x", "<D-x>", '"+d') -- cut
-  vim.keymap.set("x", "<D-c>", '"+y') -- copy
-  vim.keymap.set("i", "<D-v>", "<C-r><C-o>+") -- paste (insert)
-  vim.keymap.set("n", "<D-v>", "i<C-r><C-o>+<ESC>l") -- paste (normal)
-  vim.keymap.set("x", "<D-v>", '"+P') -- paste (visual)
-  vim.keymap.set("c", "<D-v>", "<C-r>+") -- paste (command)
+  -- Allow clipboard copy paste in neovim
+  vim.api.nvim_set_keymap("", "<D-v>", "+p<CR>", { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("!", "<D-v>", "<C-R>+", { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("t", "<D-v>", '<c-\\><c-n>"+pa', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("v", "<D-v>", "<C-R>+", { noremap = true, silent = true })
 end
 
 function M.background()

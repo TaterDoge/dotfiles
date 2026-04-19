@@ -1,15 +1,34 @@
 return {
+  {
+    "folke/sidekick.nvim",
+    keys = require("config.ai.sidekick").keys,
+    opts = {
+      nes = {
+        enabled = false,
+      },
+      cli = {
+        mux = {
+          enabled = true,
+          backend = "tmux",
+        },
+      },
+    },
+  },
+
   -- 代码伴侣 https://codecompanion.olimorris.dev
   {
     "olimorris/codecompanion.nvim",
-    -- enabled = false,
+    enabled = false,
     lazy = false,
     keys = require("config.ai.codecompanion.init").keys,
     opts = require("config.ai.codecompanion.init").config,
     dependencies = {
-      "nvim-lua/plenary.nvim",
+      { "nvim-lua/plenary.nvim" },
       "nvim-treesitter/nvim-treesitter",
       "ravitemer/codecompanion-history.nvim",
+      "cairijun/codecompanion-agentskills.nvim",
+      "bassamsdata/fs-monitor.nvim",
+      "franco-ruggeri/codecompanion-spinner.nvim",
       {
         "j-hui/fidget.nvim",
         opts = {
@@ -21,15 +40,9 @@ return {
         },
       },
       {
-        "OXY2DEV/markview.nvim",
-        lazy = false,
-        opts = {
-          experimental = { check_rtp_message = false },
-          preview = {
-            filetypes = { "markdown", "codecompanion" },
-            ignore_buftypes = {},
-          },
-        },
+        "MeanderingProgrammer/render-markdown.nvim",
+        ft = { "markdown", "codecompanion" },
+        opts = require("config.editor.render-markdown"),
       },
       -- 使用内联助手或 @editor 工具时，使用 mini.diff 获得更清晰的差异
       {
@@ -55,22 +68,26 @@ return {
           },
         },
       },
-      {
-        "ravitemer/mcphub.nvim",
-        build = "pnpm add -g mcp-hub@latest",
-        opts = {
-          auto_approve = true,
-        },
-      },
     },
-    init = function()
-      require("config.ai.codecompanion.fidget-spinner"):init()
-    end,
   },
 
   {
-    "folke/sidekick.nvim",
-    keys = require("config.ai.sidekick").keys,
-    opts = require("config.ai.sidekick").config,
+    "sudo-tee/opencode.nvim",
+    config = function()
+      require("opencode").setup({
+        preferred_picker = "snacks",
+        default_mode = "BUILD",
+      })
+    end,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      {
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = require("config.editor.render-markdown"),
+        ft = { "markdown", "Avante", "copilot-chat", "opencode_output" },
+      },
+      "saghen/blink.cmp",
+      "folke/snacks.nvim",
+    },
   },
 }

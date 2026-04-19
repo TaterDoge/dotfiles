@@ -1,0 +1,9 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
+  // 格式化器配置
+  "formatter": {
+    "lineWidth": 120, // 最大行宽
+    "indentWidth": 2, // 缩进宽度（空格数）
+    "indentStyle": "space" // 使用空格缩进
+  }
+}

@@ -1,11 +1,20 @@
 local M = {}
 
---- @type string # 默认适配器名称，可选值为"siliconflow"或其他支持的适配器
--- byte_dance | siliconflow
--- 默认适配器配置字符串
--- 用于指定系统默认使用的AI模型适配器，当前默认值为"siliconflow"
--- 该值会在未显式指定适配器时作为后备选项使用
-local defaultAdapters = "byte_dance"
+--- @type string # 默认适配器名称
+-- codeplan
+local defaultAdapters = "llm"
+-- local defaultAdapters = "opencode"
+local models = {
+  "gpt-5.4",
+  "gpt-5.4-mini",
+  "claude-opus-4.6",
+  "claude-sonnet-4.6",
+  "kimi-k2.5",
+  "glm-5",
+  "minimax-m2.5",
+}
+local defaultModel = "claude-sonnet-4.6"
+local secondaryModel = "gpt-5.4-mini"
 
 M.keys = {
   {
@@ -23,198 +32,177 @@ M.keys = {
 }
 
 M.config = {
+  -- 配置
   opts = {
     language = "Chinese",
-    system_prompt = [[请遵循以下步骤：
-    1. 回答使用中文。
-    2. 尽可能简洁的回答我的问题, 但关键内容不能缺少, 特别是代码相关的回答一定要将问题相关的完整的代码块进行返回。
-    3. 与答案不相关的内容都不需要输出。
-    4. 特别注意!!!如果需要输出代码, 需要注意代码的类型不能出现不安全的类型定义,如:typeScript中的any
-  ]],
-  },
-  -- 适配器
-  adapters = {
-    -- 火山引擎
-    byte_dance = function()
-      -- openai_compatible
-      -- deepseek
-      return require("codecompanion.adapters").extend("openai_compatible", {
-        name = "byte_dance",
-        url = "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
-        env = {
-          api_key = function()
-            return os.getenv("BYTEDABCE_API_KEY")
-          end,
-        },
-        schema = {
-          model = {
-            -- deepseek-r1-250528
-            -- deepseek-v3-1-250821
-            -- kimi-k2-250905
-            default = "deepseek-v3-1-terminus",
-            choices = {
-              ["deepseek-r1-250528"] = { opts = { can_reason = true } },
-              "deepseek-v3-1-terminus",
-              "kimi-k2-250905",
-            },
-          },
-        },
-      })
-    end,
-
-    claude = function()
-      return require("codecompanion.adapters").extend("claude_code", {
-        name = "claude",
-        url = "https://anyrouter.top",
-        env = {
-          api_key = "sk-zRoi94KKs6kUKAWgRJj6X16vmI6paqDZ1VA1He9n7KZBRXRN",
-        },
-        schema = {
-          model = {
-            default = "claude-sonnet-4.5",
-            choices = {
-              "claude-sonnet-4.5",
-            },
-          },
-        },
-      })
-    end,
   },
 
-  -- 策略 - 配置操作使用的适配器
-  strategies = {
+  display = {
     chat = {
-      adapter = defaultAdapters,
-      keymaps = {
-        clear = {
-          modes = { n = "gxa" },
-          index = 6,
-          callback = "keymaps.clear",
-          description = "Clear chat",
-        },
+      start_in_insert_mode = true, -- 以插入模式打开聊天缓冲区？
+    },
+    diff = {
+      enabled = true,
+      word_highlights = {
+        additions = true,
+        deletions = true,
       },
     },
-    inline = {
-      adapter = defaultAdapters,
+  },
+
+  -- 适配器
+  adapters = {
+    http = {
+      -- llm
+      ["llm"] = function()
+        -- openai_compatible
+        -- anthropic
+        return require("codecompanion.adapters").extend("openai_compatible", {
+          name = "x-aio",
+          url = "http://localhost:8090/v1/chat/completions",
+          env = {
+            api_key = function()
+              return os.getenv("LLM_API_KEY")
+            end,
+          },
+          schema = {
+            model = {
+              default = defaultModel,
+              choices = models,
+            },
+            extended_thinking = {
+              default = true,
+            },
+            thinking_budget = {
+              default = 16000,
+            },
+          },
+        })
+      end,
     },
-    cmd = {
+  },
+
+  -- 交互行为 - 配置操作使用的适配器
+  interactions = {
+    chat = {
       adapter = defaultAdapters,
+      variables = {
+        ["buffer"] = {
+          opts = {
+            default_params = "diff", -- all diff
+          },
+        },
+      },
+      tools = {
+        opts = {
+          default_tools = { "agent", "agent_skills" },
+        },
+        ["insert_edit_into_file"] = {
+          opts = {
+            require_approval_before = {
+              buffer = false,
+              file = false,
+            },
+            require_confirmation_after = false,
+          },
+        },
+        ["run_command"] = {
+          opts = {
+            allowed_in_yolo_mode = true,
+            require_approval_before = false,
+            require_cmd_approval = false,
+          },
+        },
+        ["create_file"] = {
+          opts = {
+            require_approval_before = false,
+            require_cmd_approval = false,
+          },
+        },
+        ["grep_search"] = {
+          opts = {
+            require_approval_before = false,
+            require_cmd_approval = false,
+          },
+        },
+        ["read_file"] = {
+          opts = {
+            require_approval_before = false,
+            require_cmd_approval = false,
+          },
+        },
+      },
     },
   },
 
   prompt_library = {
-    ["Chinese explain"] = {
-      strategy = "chat",
-      description = "中文解释代码",
-      opts = {
-        short_name = "explain in chinese",
-        modes = { "v" },
-        index = 5,
-        is_default = true,
-        is_slash_cmd = false,
-        auto_submit = true,
-        user_prompt = false,
-        stop_context_insertion = true,
-      },
-      prompts = {
-        {
-          role = "system",
-          content = [[当被要求解释代码时，请遵循以下步骤：
-            1. 识别编程语言。
-            2. 描述代码的目的，并引用该编程语言的核心概念。
-            3. 解释每个函数或重要的代码块，包括参数和返回值。
-            4. 突出说明使用的任何特定函数或方法及其作用。
-            5. 如果适用，提供该代码如何融入更大应用程序的上下文。
-          ]],
-          opts = {
-            visible = false,
-          },
-        },
-        {
-          role = "user",
-          content = function(context)
-            local input = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
-
-            return string.format(
-              [[请解释 buffer %d 中的这段代码:
-              ```%s
-              %s
-              ```
-              ]],
-              context.bufnr,
-              context.filetype,
-              input
-            )
-          end,
-          opts = {
-            contains_code = true,
-          },
-        },
-      },
-    },
-    ["Code Format"] = {
-      strategy = "inline",
-      description = "代码格式化",
-      opts = {
-        short_name = "code format",
-        modes = { "v" },
-      },
-      prompts = {
-        {
-          role = "system",
-          content = [[当被要求格式化代码时，请遵循以下步骤：
-            1. 识别编程语言。
-            2. 按照编程语言的格式化要求进行格式化。
-          ]],
-        },
-      },
-    },
-    ["Chinese add comments"] = {
-      strategy = "inline",
-      description = "添加中文注释",
-      opts = {
-        short_name = "add chinese comments",
-        modes = { "v" },
-      },
-      prompts = {
-        {
-          role = "system",
-          content = [[当被要求添加代码注释时，请添加中文注释并遵循以下步骤：
-            1. 识别编程语言及其注释语法规范
-              - 明确单行注释(如// # --)和多行注释(如/* */ ''' """)的语法
-              - 注意不同语言的文档注释规范
-
-            2. 分析代码功能与结构
-              - 在文件/模块顶部添加整体功能描述注释
-              - 为每个类/结构体添加设计意图说明
-              - 对复杂算法添加工作原理注释
-
-            3. 编写规范化注释内容
-              - 函数注释需包含：
-                * 功能描述
-                * @param参数说明(类型+用途)
-                * @return返回值说明
-                * @throws可能抛出的异常
-              - 关键变量注释应说明：
-                * 用途约束
-                * 特殊取值范围
-                * 计量单位(如ms/kB)
-
-            4. 保持注释风格一致
-              - 统一注释符号与缩进风格
-              - 专业术语保持前后一致
-              - 注释需符合技术写作规范
-
-            5. 特殊注意事项
-              - 对hack/临时代码添加显式标记(TODO/FIXME)
-              - 敏感代码需添加安全警告注释
-              - 性能关键代码标注复杂度分析(O(n)等)
-              - 函数名上面一定要添加注释注明函数用意
-        ]],
-        },
+    markdown = {
+      dirs = {
+        "~/.config/opencode/command",
       },
     },
   },
+
+  -- MCP 服务器配置
+  mcp = {
+    servers = {
+      ["tavily-mcp"] = {
+        cmd = { "npx", "-y", "tavily-mcp@latest" },
+        env = {
+          TAVILY_API_KEY = function()
+            return os.getenv("TAVILY_API_KEY")
+          end,
+        },
+      },
+      ["sequential-thinking"] = {
+        cmd = { "npx", "-y", "@modelcontextprotocol/server-sequential-thinking" },
+        tool_overrides = {
+          sequentialthinking = {
+            output = {
+              success = function(self, tools, _, stdout)
+                local output = stdout and stdout[#stdout]
+                local msg = "Sequential thinking: " .. self.args.thought
+                tools.chat:add_tool_output(self, output, msg)
+              end,
+            },
+          },
+        },
+      },
+      ["augment-context-engine"] = {
+        cmd = { "auggie", "--mcp", "--mcp-auto-workspace" },
+      },
+      ["filesystem"] = {
+        cmd = {
+          "npx",
+          "-y",
+          "@modelcontextprotocol/server-filesystem",
+          "/Users/taterdoge",
+        },
+      },
+      ["chrome-devtools"] = {
+        cmd = { "npx", "-y", "chrome-devtools-mcp@latest" },
+      },
+      ["github"] = {
+        cmd = {
+          "docker",
+          "run",
+          "-i",
+          "--rm",
+          "-e",
+          "GITHUB_PERSONAL_ACCESS_TOKEN=" .. (os.getenv("GITHUB_TOKEN") or ""),
+          "-e",
+          "GITHUB_TOOLSETS=all",
+          "ghcr.io/github/github-mcp-server",
+        },
+      },
+    },
+    opts = {
+      default_servers = { "sequential-thinking", "tavily-mcp", "filesystem" },
+    },
+  },
+
+  -- 规则
+  rules = {},
 
   -- 扩展
   extensions = {
@@ -227,17 +215,34 @@ M.config = {
         save_chat_keymap = "sc",
         -- Save all chats by default (disable to save only manually using 'sc')
         auto_save = true,
-        -- Number of days after which chats are automatically deleted (0 to disable)
-        expiration_days = 0,
-        -- Picker interface ("telescope" or "snacks" or "fzf-lua" or "default")
-        picker = "snacks",
+        -- 聊天记录自动删除的天数（0表示禁用该功能）
+        expiration_days = 1,
+        -- 选择器界面（自动解析为有效的选择器）
+        picker = "snacks", --- ("telescope", "snacks", "fzf-lua", or "default")
+        -- 可选的过滤功能，用于控制浏览时显示的聊天记录。
+        chat_filter = nil, -- function(chat_data) return boolean end
+        -- Customize picker keymaps (optional)
+        picker_keymaps = {
+          rename = { n = "r", i = "<M-r>" },
+          delete = { n = "d", i = "<M-d>" },
+          duplicate = { n = "<C-y>", i = "<C-y>" },
+        },
         ---Automatically generate titles for new chats
         auto_generate_title = true,
         title_generation_opts = {
-          ---Adapter for generating titles (defaults to active chat's adapter)
-          adapter = nil, -- e.g "copilot"
-          ---Model for generating titles (defaults to active chat's model)
-          model = nil, -- e.g "gpt-4o"
+          ---Adapter for generating titles (defaults to current chat adapter)
+          adapter = defaultAdapters, -- "copilot"
+          ---Model for generating titles (defaults to current chat model)
+          model = secondaryModel, -- "gpt-4o"
+          ---Number of user prompts after which to refresh the title (0 to disable)
+          refresh_every_n_prompts = 0, -- e.g., 3 to refresh after every 3rd user prompt
+          ---Maximum number of times to refresh the title (default: 3)
+          max_refreshes = 3,
+          format_title = function(original_title)
+            -- this can be a custom function that applies some custom
+            -- formatting to the title.
+            return original_title
+          end,
         },
         ---On exiting and entering neovim, loads the last chat on opening chat
         continue_last_chat = false,
@@ -247,17 +252,54 @@ M.config = {
         dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
         ---Enable detailed logging for history extension
         enable_logging = false,
+
+        -- Summary system
+        summary = {
+          -- Keymap to generate summary for current chat (default: "gcs")
+          create_summary_keymap = "gcs",
+          -- Keymap to browse summaries (default: "gbs")
+          browse_summaries_keymap = "gbs",
+
+          generation_opts = {
+            adapter = nil, -- defaults to current chat adapter
+            model = nil, -- defaults to current chat model
+            context_size = 90000, -- max tokens that the model supports
+            include_references = true, -- include slash command content
+            include_tool_outputs = true, -- include tool execution results
+            system_prompt = nil, -- custom system prompt (string or function)
+            format_summary = nil, -- custom function to format generated summary e.g to remove <think/> tags from summary
+          },
+        },
       },
     },
-    mcphub = {
-      callback = "mcphub.extensions.codecompanion",
+    spinner = {},
+    agentskills = {
+      enabled = true,
       opts = {
-        show_result_in_chat = true, -- 在聊天中显示麦克风工具的结果
-        make_vars = true, -- 将资源转换为#变量
-        make_slash_commands = true, -- 将提示添加为 /slash 命令
+        paths = {
+          "~/.config/opencode/skills",
+        },
+      },
+    },
+    fs_monitor = {
+      enabled = true,
+      opts = {
+        keymap = "gD",
       },
     },
   },
 }
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "CodeCompanionChatCreated",
+  callback = function(event)
+    local chat = require("codecompanion").buf_get_chat(event.data.bufnr)
+    if chat then
+      -- Insert #buffer at the end of the chat buffer
+      local line_count = vim.api.nvim_buf_line_count(event.data.bufnr)
+      vim.api.nvim_buf_set_lines(event.data.bufnr, line_count, line_count, false, { "", "#{buffer}", "" })
+    end
+  end,
+})
 
 return M
