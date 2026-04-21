@@ -33,20 +33,18 @@ brew "uv"
 # Docker 容器管理 TUI
 brew "lazydocker"
 # 现代终端复用器
-brew "zellij"
+brew "tmux"
 
 # 字体
 cask "font-maple-mono-nf-cn"
 
-# 代理软件
-cask "clash-party"
 # 屏幕窗口管理
 cask "nikitabobko/tap/aerospace"
 
 # 阻止commnad + Q 立即退出
 cask "commandq"
 # 浏览器
-cask "chatgpt-atlas"
+# cask "chatgpt-atlas"
 # 用于文本翻译和识别的软件
 cask "easydict"
 # 终端模拟器
@@ -54,7 +52,7 @@ cask "kitty"
 # Raycast 启动器
 cask "raycast"
 # ai对话工具
-cask "cherry-studio"
+cask "lobehub"
 # neovim GUI客户端
 cask "neovide-app"
 # api测试工具
@@ -78,5 +76,3 @@ cask "figma"
 # 输入法自动切换
 cask "input-source-pro"
 cask "Jackiexiao/tap/macvimswitch"
-# agent工具
-cask "cherry-studio"

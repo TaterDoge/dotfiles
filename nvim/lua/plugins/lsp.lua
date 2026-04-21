@@ -5,7 +5,6 @@ return {
       ensure_installed = {
         "fish-lsp",
         "biome",
-        "rustfmt",
         "json-lsp",
         "vtsls",
         "prisma-language-server",
