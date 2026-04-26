@@ -12,7 +12,7 @@ brew "yazi"
 brew "pnpm"
 # 简单、快速和用户友好的替代方案
 brew "fd"
-# 语言 管理器 
+# 语言 管理器
 brew "mise"
 # 用 Go 编写的命令行模糊查找器
 brew "fzf"
@@ -34,6 +34,14 @@ brew "uv"
 brew "lazydocker"
 # 现代终端复用器
 brew "tmux"
+# GitHub CLI
+brew "gh"
+# 开发工具
+brew "cocoapods"
+brew "rtk"
+brew "ollama"
+# 工具
+brew "mole"
 
 # 字体
 cask "font-maple-mono-nf-cn"
@@ -43,8 +51,6 @@ cask "nikitabobko/tap/aerospace"
 
 # 阻止commnad + Q 立即退出
 cask "commandq"
-# 浏览器
-# cask "chatgpt-atlas"
 # 用于文本翻译和识别的软件
 cask "easydict"
 # 终端模拟器
@@ -75,4 +81,11 @@ cask "orbstack"
 cask "figma"
 # 输入法自动切换
 cask "input-source-pro"
-cask "Jackiexiao/tap/macvimswitch"
+# vim输入法切换
+cask "jackiexiao/tap/macvimswitch"
+# 其他
+cask "cc-switch"
+cask "claude-code"
+cask "feishu"
+cask "thaw"
+cask "xcodes-app"
