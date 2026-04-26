@@ -44,3 +44,6 @@ temp/
 # Local development files
 *.local
 .local-*
+
+#排除目录
+raycast/
