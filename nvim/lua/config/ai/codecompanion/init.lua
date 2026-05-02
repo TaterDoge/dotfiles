@@ -5,15 +5,12 @@ local M = {}
 local defaultAdapters = "llm"
 -- local defaultAdapters = "opencode"
 local models = {
-  "gpt-5.4",
+  "gpt-5.5",
   "gpt-5.4-mini",
-  "claude-opus-4.6",
-  "claude-sonnet-4.6",
-  "kimi-k2.5",
-  "glm-5",
-  "minimax-m2.5",
+  "kimi-k2.6",
+  "glm-5.1",
 }
-local defaultModel = "claude-sonnet-4.6"
+local defaultModel = "gpt-5.5"
 local secondaryModel = "gpt-5.4-mini"
 
 M.keys = {
@@ -57,9 +54,10 @@ M.config = {
       ["llm"] = function()
         -- openai_compatible
         -- anthropic
-        return require("codecompanion.adapters").extend("openai_compatible", {
-          name = "x-aio",
-          url = "http://localhost:8090/v1/chat/completions",
+        return require("codecompanion.adapters").extend("openai", {
+          name = "llm",
+          -- url = "http://localhost:8090/v1/chat/completions",
+          url = "http://localhost:8090/v1/responses",
           env = {
             api_key = function()
               return os.getenv("LLM_API_KEY")
@@ -70,12 +68,12 @@ M.config = {
               default = defaultModel,
               choices = models,
             },
-            extended_thinking = {
-              default = true,
-            },
-            thinking_budget = {
-              default = 16000,
-            },
+          },
+          top_p = {
+            optional = true,
+            enabled = function()
+              return false
+            end,
           },
         })
       end,
@@ -168,9 +166,6 @@ M.config = {
           },
         },
       },
-      ["augment-context-engine"] = {
-        cmd = { "auggie", "--mcp", "--mcp-auto-workspace" },
-      },
       ["filesystem"] = {
         cmd = {
           "npx",
@@ -178,9 +173,6 @@ M.config = {
           "@modelcontextprotocol/server-filesystem",
           "/Users/taterdoge",
         },
-      },
-      ["chrome-devtools"] = {
-        cmd = { "npx", "-y", "chrome-devtools-mcp@latest" },
       },
       ["github"] = {
         cmd = {

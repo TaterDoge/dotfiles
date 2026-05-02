@@ -18,7 +18,7 @@ return {
   -- 代码伴侣 https://codecompanion.olimorris.dev
   {
     "olimorris/codecompanion.nvim",
-    enabled = false,
+    enabled = true,
     lazy = false,
     keys = require("config.ai.codecompanion.init").keys,
     opts = require("config.ai.codecompanion.init").config,
