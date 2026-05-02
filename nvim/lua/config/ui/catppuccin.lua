@@ -1,5 +1,5 @@
 return {
-  flavour = "frappe", -- latte, frappe, macchiato, mocha
+  flavour = "mocha", -- latte, frappe, macchiato, mocha
   transparent_background = true,
   float = {
     transparent = true, -- enable transparent floating windows

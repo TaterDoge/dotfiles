@@ -35,7 +35,7 @@ function M.config()
   vim.g.neovide_cursor_smooth_blink = false
   -- 动画切换到命令行
   vim.g.neovide_cursor_animate_command_line = true
-  vim.g.neovide_alpha_composition = false
+  vim.g.neovide_alpha_composition = true
 
   vim.keymap.set("n", "<D-s>", ":w<CR>") -- Save
   vim.keymap.set("v", "<D-c>", '"+y') -- Copy
@@ -53,7 +53,7 @@ end
 
 function M.background()
   -- 设置透明背景
-  vim.g.neovide_opacity = 1
+  vim.g.neovide_opacity = 0.9
   -- 窗口模糊
   vim.g.neovide_window_blurred = true
 

@@ -70,8 +70,7 @@ local function copy_file_mention()
   vim.notify("✅ 已复制到剪贴板：" .. mention, vim.log.levels.INFO, { title = "file path快捷复制" })
 end
 
-vim.keymap.set("n", "<leader>cp", copy_file_mention, { desc = "快速获取当前文件 @提及" })
-vim.keymap.set("x", "<leader>cp", copy_file_mention, { desc = "快速获取当前文件 @提及和选区" })
+vim.keymap.set("n", "<leader>yp", copy_file_mention, { desc = "快速获取当前文件 @提及" })
 
 ------------------
 --- LSP
