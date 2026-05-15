@@ -1,0 +1,140 @@
+# Rift config migrated from ~/.config/aerospace/aerospace.toml
+
+[settings]
+animate = false
+animation_duration = 0.3
+animation_fps = 100.0
+
+default_disable = false
+focus_follows_mouse = false
+mouse_follows_focus = true
+mouse_hides_on_focus = false
+auto_focus_blacklist = []
+hot_reload = true
+
+run_on_start = [
+  "sketchybar",
+  "rift-cli subscribe cli --event workspace_changed --command sh --args -c --args 'sketchybar --trigger rift_workspace_change FOCUSED_WORKSPACE=\"$RIFT_WORKSPACE_NAME\" RIFT_WORKSPACE_INDEX=\"$RIFT_WORKSPACE_INDEX\" RIFT_WORKSPACE_ID=\"$RIFT_WORKSPACE_ID\"'",
+  "rift-cli subscribe cli --event windows_changed --command sh --args -c --args 'sketchybar --trigger rift_workspace_change FOCUSED_WORKSPACE=\"$RIFT_WORKSPACE_NAME\" RIFT_WORKSPACE_INDEX=\"$RIFT_WORKSPACE_INDEX\" RIFT_WORKSPACE_ID=\"$RIFT_WORKSPACE_ID\" RIFT_WINDOW_COUNT=\"$RIFT_WINDOW_COUNT\"'",
+]
+
+[settings.layout]
+mode = "traditional"
+
+[settings.layout.stack]
+stack_offset = 30.0
+default_orientation = "perpendicular"
+
+[settings.layout.gaps.outer]
+left = 10
+bottom = 10
+top = 10
+right = 10
+
+[settings.layout.gaps.inner]
+horizontal = 10
+vertical = 10
+
+[settings.gestures]
+enabled = false
+invert_horizontal_swipe = false
+skip_empty = true
+fingers = 3
+haptics_enabled = true
+
+[settings.window_snapping]
+drag_swap_fraction = 0.3
+
+[virtual_workspaces]
+enabled = true
+default_workspace_count = 6
+auto_assign_windows = true
+preserve_focus_per_workspace = true
+workspace_auto_back_and_forth = true
+reapply_app_rules_on_title_change = false
+default_workspace = 0
+workspace_names = ["1", "2", "3", "4", "5", "6"]
+workspace_rules = []
+
+app_rules = [
+  { app_name = "ChatGPT Atlas", workspace = 0 },
+  { app_name = "Kitty", workspace = 1 },
+  { app_name = "Ghostty", workspace = 1 },
+  { app_name = "Tabby", workspace = 1 },
+  { app_name = "Figma", workspace = 2 },
+  { app_name = "钉钉", workspace = 3 },
+  { app_name = "QSpace Pro", floating = true },
+  { app_name = "lazyTrans", floating = true },
+  { app_name = "pot", floating = true },
+  { app_name = "FlClash", floating = true },
+  { app_name = "Cherry Studio", floating = true },
+  { app_name = "LobeHub", floating = true },
+  { app_name = "MuMu", floating = true },
+  { app_name = "微信", floating = true },
+  { app_name = "设置", floating = true },
+]
+
+[keys]
+"Meta + E" = { exec = [
+  "/bin/bash",
+  "-c",
+  "open -a '/Applications/QSpace Pro.app/'",
+] }
+
+"Meta + Slash" = "toggle_stack"
+"Meta + Shift + Slash" = "toggle_orientation"
+
+"Meta + H" = { move_focus = "left" }
+"Meta + J" = { move_focus = "down" }
+"Meta + K" = { move_focus = "up" }
+"Meta + L" = { move_focus = "right" }
+
+"Meta + Ctrl + H" = { move_node = "left" }
+"Meta + Ctrl + J" = { move_node = "down" }
+"Meta + Ctrl + K" = { move_node = "up" }
+"Meta + Ctrl + L" = { move_node = "right" }
+
+"Meta + Minus" = "resize_window_shrink"
+"Meta + Equal" = "resize_window_grow"
+
+"Meta + 1" = { switch_to_workspace = 0 }
+"Meta + 2" = { switch_to_workspace = 1 }
+"Meta + 3" = { switch_to_workspace = 2 }
+"Meta + 4" = { switch_to_workspace = 3 }
+"Meta + 5" = { switch_to_workspace = 4 }
+"Meta + 6" = { switch_to_workspace = 5 }
+
+"Meta + Shift + 1" = { move_window_to_workspace = 0 }
+"Meta + Shift + 2" = { move_window_to_workspace = 1 }
+"Meta + Shift + 3" = { move_window_to_workspace = 2 }
+"Meta + Shift + 4" = { move_window_to_workspace = 3 }
+"Meta + Shift + 5" = { move_window_to_workspace = 4 }
+"Meta + Shift + 6" = { move_window_to_workspace = 5 }
+
+"Meta + Tab" = "switch_to_last_workspace"
+
+"Meta + Shift + H" = { join_window = "left" }
+"Meta + Shift + J" = { join_window = "down" }
+"Meta + Shift + K" = { join_window = "up" }
+"Meta + Shift + L" = { join_window = "right" }
+
+"Meta + Shift + Space" = "toggle_window_floating"
+"Meta + Shift + Semicolon" = "toggle_space_activated"
+
+"Meta + Ctrl + R" = "unjoin_windows"
+# "Meta + Ctrl + Backspace" = { close_window = {} }
+"Meta + Ctrl + Down" = { exec = [
+  "/usr/bin/osascript",
+  "-e",
+  "set volume output volume ((output volume of (get volume settings)) - 10)",
+] }
+"Meta + Ctrl + Up" = { exec = [
+  "/usr/bin/osascript",
+  "-e",
+  "set volume output volume ((output volume of (get volume settings)) + 10)",
+] }
+"Meta + Ctrl + Shift + Down" = { exec = [
+  "/usr/bin/osascript",
+  "-e",
+  "set volume output volume 0",
+] }
