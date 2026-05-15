@@ -54,7 +54,7 @@ M.config = {
       ["llm"] = function()
         -- openai_compatible
         -- anthropic
-        return require("codecompanion.adapters").extend("openai", {
+        return require("codecompanion.adapters").extend("openai_responses", {
           name = "llm",
           -- url = "http://localhost:8090/v1/chat/completions",
           url = "http://localhost:8090/v1/responses",
