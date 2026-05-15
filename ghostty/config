@@ -8,7 +8,7 @@ font-style = Italic
 font-size = 14
 font-thicken
 
-background-opacity = 1
+background-opacity = 1.00
 background-blur = true
 
 macos-titlebar-style = transparent
