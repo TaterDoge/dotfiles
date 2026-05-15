@@ -1,30 +1,4 @@
-CONFIG_DIR="$HOME/.config/sketchybar"
-. "$CONFIG_DIR/globals.sh"
-. "$CONFIG_DIR/items.sh"
+#!/usr/bin/env lua
 
-sketchybar --bar "${SB_BAR[@]}" --default "${SB_DEFAULT[@]}"
-sketchybar --add event window_change
-sketchybar --add event front_app_switched
-
-###### Top ######
-
-sb_clock left
-sb_separator left 0 15
-sb_date left
-sb_separator left 15 15
-sb_spaces left
-sb_separator left 15 15
-sb_front_app left
-
-
-###### Btm ######
-
-sb_battery right
-sb_cpu right
-sb_volume right
-sb_separator right 15 15
-sb_theme_toggle right
-
-##################
-
-sketchybar --update
+-- Load the sketchybar-package and prepare the helper binaries
+require("init")
