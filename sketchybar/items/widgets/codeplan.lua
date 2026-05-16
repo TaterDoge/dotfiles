@@ -29,6 +29,7 @@ local widget_bar_height = 5
 local codeplan_status = sbar.add("item", "widgets.codeplan.status", {
 	position = "right",
 	width = 0,
+	update_freq = 60,
 	y_offset = 4,
 	icon = {
 		string = "--/--",
@@ -484,12 +485,7 @@ end
 sbar.add("event", "codeplan_token_updated")
 codeplan_separator:subscribe("codeplan_token_updated", update_usage)
 
-local refresh_timer = sbar.add("item", "widgets.codeplan.refresh_timer", {
-	update_freq = 60,
-	drawing = false,
-})
-
-refresh_timer:subscribe("routine", function()
+codeplan_status:subscribe({ "forced", "routine", "system_woke" }, function()
 	update_usage()
 end)
 
