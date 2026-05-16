@@ -1,7 +1,7 @@
 # Rift config migrated from ~/.config/aerospace/aerospace.toml
 
 [settings]
-animate = false
+animate = true
 animation_duration = 0.3
 animation_fps = 100.0
 
@@ -16,6 +16,7 @@ run_on_start = [
   "sketchybar",
   "rift-cli subscribe cli --event workspace_changed --command sh --args -c --args 'sketchybar --trigger rift_workspace_change FOCUSED_WORKSPACE=\"$RIFT_WORKSPACE_NAME\" RIFT_WORKSPACE_INDEX=\"$RIFT_WORKSPACE_INDEX\" RIFT_WORKSPACE_ID=\"$RIFT_WORKSPACE_ID\"'",
   "rift-cli subscribe cli --event windows_changed --command sh --args -c --args 'sketchybar --trigger rift_workspace_change FOCUSED_WORKSPACE=\"$RIFT_WORKSPACE_NAME\" RIFT_WORKSPACE_INDEX=\"$RIFT_WORKSPACE_INDEX\" RIFT_WORKSPACE_ID=\"$RIFT_WORKSPACE_ID\" RIFT_WINDOW_COUNT=\"$RIFT_WINDOW_COUNT\"'",
+  "rift-cli subscribe cli --event windows_changed --command /bin/bash --args /Users/taterdoge/.config/rift/scripts/refocus.sh",
 ]
 
 [settings.layout]
@@ -67,7 +68,6 @@ app_rules = [
   { app_name = "lazyTrans", floating = true },
   { app_name = "pot", floating = true },
   { app_name = "FlClash", floating = true },
-  { app_name = "Cherry Studio", floating = true },
   { app_name = "LobeHub", floating = true },
   { app_name = "MuMu", floating = true },
   { app_name = "微信", floating = true },
@@ -122,7 +122,7 @@ app_rules = [
 "Meta + Shift + Semicolon" = "toggle_space_activated"
 
 "Meta + Ctrl + R" = "unjoin_windows"
-# "Meta + Ctrl + Backspace" = { close_window = {} }
+"Meta + Ctrl + Delete" = { close_window = {} }
 "Meta + Ctrl + Down" = { exec = [
   "/usr/bin/osascript",
   "-e",
