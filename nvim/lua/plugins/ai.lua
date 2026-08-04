@@ -1,17 +1,18 @@
 return {
   {
-    "folke/sidekick.nvim",
+    name = "sidekick.nvim",
     keys = require("config.ai.sidekick").keys,
+    dir = "/Users/taterdoge/github/sidekick.nvim",
     opts = {
       nes = {
         enabled = false,
       },
-      cli = {
-        mux = {
-          enabled = true,
-          backend = "tmux",
-        },
-      },
+      -- cli = {
+      --   mux = {
+      --     enabled = true,
+      --     backend = "tmux",
+      --   },
+      -- },
     },
   },
 

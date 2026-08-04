@@ -1,91 +1,64 @@
-# fish
-brew "fish"
-# sehll提示以及美化
-brew "starship"
-# 雄心勃勃的 Vim-fork 专注于可扩展性和敏捷性
-brew "neovim"
-# 平铺窗口管理器
-brew "felixkratz/formulae/sketchybar"
-# 编写的超快终端文件管理器
-brew "yazi"
-# node包管理工具
-brew "pnpm"
-# 简单、快速和用户友好的替代方案
-brew "fd"
-# 语言 管理器
-brew "mise"
-# 用 Go 编写的命令行模糊查找器
-brew "fzf"
-# 轻量级灵活的命令行 JSON 处理器
-brew "jq"
-# tree-sitter 语法解析
-brew "tree-sitter"
-brew "tree-sitter-cli"
-# 用于 git 命令的简单终端 UI
-brew "lazygit"
-# 搜索工具，如 grep 和 The Silver Searcher
-brew "ripgrep"
-brew "zoxide"
-# ls 增强
-brew "lsd"
-# uv
-brew "uv"
-# Docker 容器管理 TUI
-brew "lazydocker"
-# 现代终端复用器
-brew "tmux"
-# GitHub CLI
-brew "gh"
-# 开发工具
-brew "cocoapods"
-brew "rtk"
-brew "ollama"
-# 工具
-brew "mole"
+# 核心工具
+brew "acsandmann/tap/rift" # macOS 平铺式窗口管理器
+brew "bat" # 带语法高亮和 Git 集成的 cat 替代工具
+brew "cmake" # 跨平台构建系统生成器
+brew "cocoapods" # Cocoa 项目依赖管理器
+brew "colima" # 在 macOS 上运行容器的轻量运行时
+brew "docker" # Docker 容器命令行工具
+brew "docker-compose" # 编排多容器 Docker 应用
+brew "docker-credential-helper" # 安全存储 Docker 登录凭据
+brew "fd" # 简洁快速的 find 替代工具
+brew "fish" # 易用的交互式命令行 Shell
+brew "fzf" # 命令行模糊查找器
+brew "gh" # GitHub 官方命令行工具
+brew "herdr" # 在终端中管理多个 AI Agent
+brew "jq" # 命令行 JSON 处理器
+brew "lazygit" # Git 终端图形界面
+brew "lsd" # 带颜色和图标的 ls 替代工具
+brew "luarocks" # Lua 包管理器
+brew "maven" # Java 项目构建与依赖管理工具
+brew "mise" # 多语言运行时和工具版本管理器
+brew "mole" # macOS 清理与优化工具
+brew "neovim" # 可扩展的现代 Vim 编辑器
+brew "openjdk@21" # Java 21 开发工具包
+brew "pnpm" # 快速且节省磁盘空间的 Node.js 包管理器
+brew "rich-cli" # 在终端中美化文本、表格和 Markdown 输出
+brew "ripgrep" # 高性能递归文本搜索工具
+brew "rtk" # 减少 LLM Token 消耗的 CLI 代理
+brew "starship" # 跨 Shell 命令行提示符
+brew "tmux" # 终端会话复用器
+brew "tree-sitter-cli" # Tree-sitter 解析器生成工具
+brew "uv" # 高性能 Python 包与项目管理器
+brew "yazi" # 高性能终端文件管理器
+brew "zig" # 注重健壮性与性能的编程语言及工具链
+brew "zoxide" # 基于使用频率快速跳转目录
 
-# 字体
-cask "font-maple-mono-nf-cn"
 
-# 屏幕窗口管理
-cask "nikitabobko/tap/aerospace"
-
-# 阻止commnad + Q 立即退出
-cask "commandq"
-# 用于文本翻译和识别的软件
-cask "easydict"
-# 终端模拟器
-cask "kitty"
-# Raycast 启动器
-cask "raycast"
-# ai对话工具
-cask "lobehub"
-# neovim GUI客户端
-cask "neovide-app"
-# api测试工具
-cask "apifox"
-# 文件管理器
-cask "qspace-pro"
-# 音视频播放器
-cask "iina"
-# 微信
-cask "wechat"
-# 微信开发者工具
-cask "wechatwebdevtools"
-# 钉钉
-cask "dingtalk"
-# expo开发工具
-cask "expo-orbit"
-# docker 管理
-cask "orbstack"
-# figma
-cask "figma"
-# 输入法自动切换
-cask "input-source-pro"
-# vim输入法切换
-cask "jackiexiao/tap/macvimswitch"
-# 其他
-cask "cc-switch"
-cask "claude-code"
-cask "feishu"
-cask "thaw"
-cask "xcodes-app"
+# Cask 应用
+cask "aerospace" # 类似 i3 的 macOS 平铺式窗口管理器
+cask "android-studio" # Android 官方集成开发环境
+cask "apifox" # API 设计、调试、测试与文档平台
+cask "chatgpt" # OpenAI 官方 ChatGPT 桌面客户端
+cask "commandq" # 防止误按 Command-Q 退出应用
+cask "crosspaste" # 跨设备同步剪贴板
+cask "dbx" # 数据库管理工具
+cask "dingtalk" # 钉钉办公协作客户端
+cask "easydict" # macOS 词典与翻译工具
+cask "expo-orbit" # 从菜单栏启动 Expo 构建和模拟器
+cask "figma" # 协作式界面设计工具
+cask "font-jetbrains-mono-nerd-font" # 带 Nerd Font 图标的 JetBrains Mono 字体
+cask "font-maple-mono-nf-cn" # 支持中文和 Nerd Font 图标的 Maple Mono 字体
+cask "iina" # macOS 开源媒体播放器
+cask "input-source-pro" # 按应用自动切换输入法
+cask "kitty" # GPU 加速终端模拟器
+cask "lathe" # 创建、托管与验证交互式技术教程
+cask "macvimswitch" # 自动切换 macOS 输入法以改善 Vim 使用体验
+cask "openpencil" # 兼容 Figma 的开源设计编辑器
+cask "qspace-pro" # 多窗格 Finder 替代文件管理器
+cask "raycast" # 应用启动、搜索与自动化效率工具
+cask "vorssaint" # 集防休眠、系统监控和音量混合于一体的菜单栏工具
+cask "warp" # 基于 Rust 的现代终端
+cask "wechat" # 微信桌面客户端
+cask "wechatwebdevtools" # 微信公众号与小程序开发工具
+cask "wechatwork" # 企业微信办公协作客户端
+cask "xcodes-app" # 安装和切换多个 Xcode 版本

@@ -109,5 +109,34 @@ opt.mousemoveevent = true -- 相应悬停事件
 
 -- 强制使用 .git 作为项目根目录(解决 monorepo 问题)
 -- 将 .git 检测优先级提升到 LSP 之前,避免 LSP 根据 package.json 错误判断根目录
-vim.g.root_spec = { ".git", "lsp", "cwd" }
+-- 但 ~/.config 是一个 dotfiles 仓库时,每个一级子目录应作为独立配置项目根目录。
+local function config_subdir_root(buf)
+  local config_home = vim.env.XDG_CONFIG_HOME or (vim.env.HOME and (vim.env.HOME .. "/.config"))
+  if not config_home then
+    return nil
+  end
+
+  config_home = vim.fs.normalize(vim.uv.fs_realpath(config_home) or config_home)
+
+  local path = vim.api.nvim_buf_get_name(buf)
+  path = path ~= "" and path or vim.uv.cwd()
+  if not path then
+    return nil
+  end
+
+  path = vim.fs.normalize(vim.uv.fs_realpath(path) or path)
+  if path == config_home then
+    return config_home
+  end
+
+  local prefix = config_home .. "/"
+  if path:sub(1, #prefix) ~= prefix then
+    return nil
+  end
+
+  local subdir = path:sub(#prefix + 1):match("^[^/]+")
+  return subdir and (prefix .. subdir) or config_home
+end
+
+vim.g.root_spec = { config_subdir_root, ".git", "lsp", "cwd" }
 vim.g.lazyvim_prettier_needs_config = true

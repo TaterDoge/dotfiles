@@ -1,0 +1,82 @@
+
+# font-blending = "linear" (reset to default)
+theme = "Ayu Dark"
+theme-dark = "Ayu Dark"
+foreground = "#b3b1ad"
+background = "#0a0e14"
+palette-0 = "#01060e"
+palette-1 = "#ea6c73"
+palette-2 = "#91b362"
+palette-3 = "#f9af4f"
+palette-4 = "#53bdfa"
+palette-5 = "#fae994"
+palette-6 = "#90e1c6"
+palette-7 = "#c7c7c7"
+palette-8 = "#686868"
+palette-9 = "#f07178"
+palette-10 = "#c2d94c"
+palette-11 = "#ffb454"
+palette-12 = "#59c2ff"
+palette-13 = "#ffee99"
+palette-14 = "#95e6cb"
+# palette-15 = "#eceff4" (reset to default)
+# selection-foreground = "#2e3440" (reset to default)
+# selection-background = "#e5e9f0" (reset to default)
+# cursor-color = "#e5e9f0" (reset to default)
+# cursor-text = "#2e3440" (reset to default)
+language = "chinese"
+
+cursor-animation = "smooth"
+
+cursor-style-blink = "always_on"
+
+font-family = "Maple Mono NF CN"
+
+text-blink = true
+
+font-size = 14
+
+# palette-15 = "#dbdbdb" (reset to default)
+
+keybind = "cmd+b=toggle_tabs_panel"
+keybind = "cmd+i=toggle_details_panel"
+keybind = "opt+up=move_divider_up"
+keybind = "opt+down=move_divider_down"
+keybind = "opt+left=move_divider_left"
+keybind = "opt+right=move_divider_right"
+keybind = "cmd+shift+j=next_tab"
+keybind = "cmd+shift+k=previous_tab"
+keybind = "cmd+left_bracket=focus_previous_pane"
+keybind = "cmd+right_bracket=focus_next_pane"
+keybind = "opt+k=focus_pane_up"
+keybind = "opt+j=focus_pane_down"
+keybind = "opt+h=focus_pane_left"
+keybind = "opt+l=focus_pane_right"
+
+# palette-15 = "#dbdbdb" (reset to default)
+
+dock-icon-error-badge = false
+
+notification-attention = false
+
+# cursor-color = "#8fb236" (reset to default)
+
+# window-working-directory = "inherit" (reset to default)
+
+# editor-visible-whitespace = true (reset to default)
+
+# editor-visible-whitespace = true (reset to default)
+
+# cursor-style = "bar" (reset to default)
+
+# palette-15 = "#a6adc8" (reset to default)
+
+# editor-vim = true (reset to default)
+
+clipboard-trim-trailing-spaces = true
+
+privilege-notification-on-finish = true
+
+notification-sound = ["finish", "error"]
+
+# window-layout = "tabs-bottom" (reset to default)

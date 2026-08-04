@@ -378,7 +378,6 @@ return {
     ["OpenAI Translator"] = ":openai_translator:",
     ["OpenVPN Connect"] = ":openvpn_connect:",
     ["Opera"] = ":opera:",
-    ["OrbStack"] = ":orbstack:",
     ["OrcaSlicer"] = ":orcaslicer:",
     ["Orion"] = ":orion:",
     ["Orion RC"] = ":orion:",

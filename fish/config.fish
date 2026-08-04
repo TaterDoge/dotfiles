@@ -73,12 +73,15 @@ if status is-interactive
     # lsd 别名
     alias ls="lsd"
 
+    # cat 别名
+    alias cat="bat"
+
     alias cwd="pwd | pbcopy"
 
     alias op="opencode"
 
     # pnpm 别名
-    alias pi="pnpm run install"
+    # alias pi="pnpm run install"
     alias pd="pnpm run dev"
     alias pb="pnpm run build"
     alias ps="pnpm run start"
@@ -94,6 +97,18 @@ if status is-interactive
     set -gx PATH /opt/homebrew/sbin $PATH
 end
 
-# Added by OrbStack: command-line tools and integration
-# This won't be added again if you remove it.
-source ~/.orbstack/shell/init2.fish 2>/dev/null || :
+# >>> grok installer >>>
+fish_add_path $HOME/.grok/bin
+# <<< grok installer <<<
+
+
+# Added by ArcBox: command-line tools and integration
+source "/Users/taterdoge/.arcbox/shell/init.fish" 2>/dev/null; or true
+
+# >>> otty shell integration >>>
+# Added by Otty — toggle in Settings > Shell > Shell Integration.
+# Inert unless launched by Otty (it sets $OTTY_SHELL_INTEGRATION).
+if test -n "$OTTY_SHELL_INTEGRATION" -a -r "$OTTY_SHELL_INTEGRATION/otty-integration.fish"
+    source "$OTTY_SHELL_INTEGRATION/otty-integration.fish"
+end
+# <<< otty shell integration <<<

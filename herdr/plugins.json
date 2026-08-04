@@ -1,0 +1,212 @@
+[
+  {
+    "plugin_id": "herdr-navigator",
+    "name": "Herdr Navigator",
+    "version": "0.3.5",
+    "min_herdr_version": "0.7.3",
+    "description": "Jump to any Herdr workspace, agent, project, session, remote, directory, or action from one fuzzy navigator.",
+    "manifest_path": "/Users/taterdoge/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5/herdr-plugin.toml",
+    "plugin_root": "/Users/taterdoge/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "cargo",
+          "build",
+          "--release"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "jump-back",
+        "title": "Herdr Navigator: jump back",
+        "contexts": [
+          "workspace",
+          "global"
+        ],
+        "command": [
+          "./target/release/herdr-navigator",
+          "jump-back"
+        ]
+      },
+      {
+        "id": "open",
+        "title": "Herdr Navigator: open",
+        "contexts": [
+          "workspace",
+          "global"
+        ],
+        "command": [
+          "./target/release/herdr-navigator",
+          "open"
+        ]
+      },
+      {
+        "id": "open-side",
+        "title": "Herdr Navigator: side pane",
+        "contexts": [
+          "workspace",
+          "global"
+        ],
+        "command": [
+          "./target/release/herdr-navigator",
+          "open-side"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "picker",
+        "title": "Herdr Navigator",
+        "placement": "overlay",
+        "command": [
+          "./target/release/herdr-navigator",
+          "ui"
+        ]
+      },
+      {
+        "id": "picker-side",
+        "title": "Navigator Side",
+        "placement": "split",
+        "command": [
+          "./target/release/herdr-navigator",
+          "ui",
+          "--side"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "thanhdat77",
+      "repo": "herdr-navigator",
+      "resolved_commit": "67cb6d9676532f0d5c3136e785815da712ac9063",
+      "managed_path": "/Users/taterdoge/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5",
+      "installed_unix_ms": 1785812597109
+    }
+  },
+  {
+    "plugin_id": "herdr-splits",
+    "name": "Herdr Splits",
+    "version": "0.5.2",
+    "min_herdr_version": "0.7.0",
+    "description": "Seamless navigation and resizing between Herdr panes and Neovim splits",
+    "manifest_path": "/Users/taterdoge/.config/herdr/plugins/github/herdr-splits-d880c4924f2b/herdr-plugin.toml",
+    "plugin_root": "/Users/taterdoge/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "actions": [
+      {
+        "id": "nav-down",
+        "title": "Navigate down (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-nav.sh",
+          "down"
+        ]
+      },
+      {
+        "id": "nav-left",
+        "title": "Navigate left (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-nav.sh",
+          "left"
+        ]
+      },
+      {
+        "id": "nav-right",
+        "title": "Navigate right (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-nav.sh",
+          "right"
+        ]
+      },
+      {
+        "id": "nav-up",
+        "title": "Navigate up (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-nav.sh",
+          "up"
+        ]
+      },
+      {
+        "id": "resize-down",
+        "title": "Resize down (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-resize.sh",
+          "down"
+        ]
+      },
+      {
+        "id": "resize-left",
+        "title": "Resize left (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-resize.sh",
+          "left"
+        ]
+      },
+      {
+        "id": "resize-right",
+        "title": "Resize right (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-resize.sh",
+          "right"
+        ]
+      },
+      {
+        "id": "resize-up",
+        "title": "Resize up (Neovim/Herder)",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "scripts/herdr-resize.sh",
+          "up"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "lmilojevicc",
+      "repo": "herdr-splits.nvim",
+      "resolved_commit": "c58bfdf01520845583e0033c11c56fc9d21a5424",
+      "managed_path": "/Users/taterdoge/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
+      "installed_unix_ms": 1785810502683
+    }
+  }
+]

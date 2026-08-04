@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/TaterDoge/tater/main/settings.schema.json",
+  "model": "custom/gpt-5.6-luna",
+  "provider": {
+    "custom": {
+      "adapter": "openai",
+      "options": {
+        "baseURL": "http://localhost:8317/v1",
+        "apiKey": "sk-local"
+      },
+      "models": {
+        "gpt-5.6-luna": {
+          "name": "gpt-5.6-luna"
+        }
+      }
+    }
+  }
+}

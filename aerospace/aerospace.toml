@@ -8,7 +8,7 @@ after-startup-command = ['exec-and-forget sketchybar']
 exec-on-workspace-change = [
   '/bin/bash',
   '-c',
-  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$AEROSPACE_FOCUSED_WORKSPACE"; printf "%s" "$AEROSPACE_FOCUSED_WORKSPACE" | /usr/bin/nc -U /tmp/nanobar-notify.sock',
 ]
 
 
@@ -60,7 +60,7 @@ preset = 'qwerty'
 [gaps]
 inner.horizontal = 10
 inner.vertical = 10
-outer.left = 70
+outer.left = 10
 outer.bottom = 10
 outer.top = 10
 outer.right = 10
@@ -161,7 +161,7 @@ up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
 
 [[on-window-detected]]
-if.app-name-regex-substring = '^(ChatGPT Atlas)$'
+if.app-name-regex-substring = '^(Dia|Google Chrome)$'
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
@@ -177,5 +177,5 @@ if.app-name-regex-substring = '^(钉钉.*)$'
 run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
-if.app-name-regex-substring = '^(QSpace Pro|lazyTrans|pot|FlClash|Cherry Studio|LobeHub|MuMu.*|微信|设置.*)$'
+if.app-name-regex-substring = '^(QSpace Pro|Cherry Studio|lazyTrans|tater|pot|FlClash|Alma|LobeHub|MuMu.*|微信|设置.*)$'
 run = 'layout floating'

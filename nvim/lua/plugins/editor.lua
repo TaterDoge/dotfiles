@@ -5,6 +5,17 @@ return {
     keys = require("config.editor.smart-splits").keys,
     opts = {
       multiplexer_integration = "tmux",
+      default_amount = 0.03,
+    },
+  },
+
+  {
+    "lmilojevicc/herdr-splits.nvim",
+    cond = vim.env.HERDR_ENV == "1",
+    event = "VeryLazy",
+    keys = require("config.editor.herdr-splits").keys,
+    opts = {
+      default_amount = 0.03,
     },
   },
 

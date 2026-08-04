@@ -6,5 +6,8 @@ return {
     opts = {
       colorscheme = env.theme,
     },
+    dependencies = {
+      "lewis6991/async.nvim",
+    },
   },
 }

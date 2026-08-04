@@ -1,0 +1,68 @@
+onboarding = false
+
+[theme]
+name = "terminal"
+
+auto_switch = false
+[ui.sound]
+enabled = true
+
+[ui.toast]
+delivery = "system"
+
+[ui]
+show_agent_labels_on_pane_borders = true
+
+[keys]
+prefix = "ctrl+space"
+previous_tab = "alt+h"
+next_tab = "alt+l"
+split_vertical = "prefix+|"
+
+[[keys.command]]
+key = "prefix+f"
+type = "plugin_action"
+command = "herdr-navigator.open"
+description = "jump to anything"
+
+# Ctrl+H/J/K/L → herdr-splits plugin: routes to Neovim when in a Neovim pane,
+# otherwise focuses the adjacent herdr pane.
+[[keys.command]]
+key = "ctrl+h"
+type = "plugin_action"
+command = "herdr-splits.nav-left"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "plugin_action"
+command = "herdr-splits.nav-down"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "plugin_action"
+command = "herdr-splits.nav-up"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "plugin_action"
+command = "herdr-splits.nav-right"
+
+[[keys.command]]
+key = "alt+left"
+type = "plugin_action"
+command = "herdr-splits.resize-left"
+
+[[keys.command]]
+key = "alt+down"
+type = "plugin_action"
+command = "herdr-splits.resize-down"
+
+[[keys.command]]
+key = "alt+up"
+type = "plugin_action"
+command = "herdr-splits.resize-up"
+
+[[keys.command]]
+key = "alt+right"
+type = "plugin_action"
+command = "herdr-splits.resize-right"

@@ -1,13 +1,13 @@
 # Rift config migrated from ~/.config/aerospace/aerospace.toml
 
 [settings]
-animate = true
+animate = false
 animation_duration = 0.3
 animation_fps = 100.0
 
 default_disable = false
 focus_follows_mouse = false
-mouse_follows_focus = true
+mouse_follows_focus = false
 mouse_hides_on_focus = false
 auto_focus_blacklist = []
 hot_reload = true
@@ -16,7 +16,7 @@ run_on_start = [
   "sketchybar",
   "rift-cli subscribe cli --event workspace_changed --command sh --args -c --args 'sketchybar --trigger rift_workspace_change FOCUSED_WORKSPACE=\"$RIFT_WORKSPACE_NAME\" RIFT_WORKSPACE_INDEX=\"$RIFT_WORKSPACE_INDEX\" RIFT_WORKSPACE_ID=\"$RIFT_WORKSPACE_ID\"'",
   "rift-cli subscribe cli --event windows_changed --command sh --args -c --args 'sketchybar --trigger rift_workspace_change FOCUSED_WORKSPACE=\"$RIFT_WORKSPACE_NAME\" RIFT_WORKSPACE_INDEX=\"$RIFT_WORKSPACE_INDEX\" RIFT_WORKSPACE_ID=\"$RIFT_WORKSPACE_ID\" RIFT_WINDOW_COUNT=\"$RIFT_WINDOW_COUNT\"'",
-  "rift-cli subscribe cli --event windows_changed --command /bin/bash --args /Users/taterdoge/.config/rift/scripts/refocus.sh",
+  # "rift-cli subscribe cli --event windows_changed --command /bin/bash --args /Users/taterdoge/.config/rift/scripts/refocus-handler.sh",
 ]
 
 [settings.layout]
@@ -29,7 +29,7 @@ default_orientation = "perpendicular"
 [settings.layout.gaps.outer]
 left = 10
 bottom = 10
-top = 10
+top = 15
 right = 10
 
 [settings.layout.gaps.inner]
@@ -58,23 +58,27 @@ workspace_names = ["1", "2", "3", "4", "5", "6"]
 workspace_rules = []
 
 app_rules = [
-  { app_name = "ChatGPT Atlas", workspace = 0 },
+  { app_name = "Google Chrome", workspace = 0 },
   { app_name = "Kitty", workspace = 1 },
   { app_name = "Ghostty", workspace = 1 },
   { app_name = "Tabby", workspace = 1 },
   { app_name = "Figma", workspace = 2 },
+  { app_name = "Codex", workspace = 2 },
   { app_name = "钉钉", workspace = 3 },
   { app_name = "QSpace Pro", floating = true },
   { app_name = "lazyTrans", floating = true },
   { app_name = "pot", floating = true },
   { app_name = "FlClash", floating = true },
-  { app_name = "LobeHub", floating = true },
-  { app_name = "MuMu", floating = true },
+  { app_name = "Alma", floating = true },
+  { app_name = "Tater", floating = true },
+  { app_name = "LazyTrans", floating = true },
   { app_name = "微信", floating = true },
   { app_name = "设置", floating = true },
 ]
 
 [keys]
+# --- App Launch Shortcuts (ref: QSpace Pro uses ⌥Space for Alma) ---
+"Option + Space" = { exec = ["/bin/bash", "-c", "open -a Alma"] }
 "Meta + E" = { exec = [
   "/bin/bash",
   "-c",
@@ -113,12 +117,12 @@ app_rules = [
 
 "Meta + Tab" = "switch_to_last_workspace"
 
-"Meta + Shift + H" = { join_window = "left" }
-"Meta + Shift + J" = { join_window = "down" }
-"Meta + Shift + K" = { join_window = "up" }
-"Meta + Shift + L" = { join_window = "right" }
+# "Meta + Shift + H" = { join_window = "left" }
+# "Meta + Shift + J" = { join_window = "down" }
+# "Meta + Shift + K" = { join_window = "up" }
+# "Meta + Shift + L" = { join_window = "right" }
 
-"Meta + Shift + Space" = "toggle_window_floating"
+# "Meta + Shift + Space" = "toggle_window_floating"
 "Meta + Shift + Semicolon" = "toggle_space_activated"
 
 "Meta + Ctrl + R" = "unjoin_windows"

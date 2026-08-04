@@ -5,13 +5,14 @@ local M = {}
 local defaultAdapters = "llm"
 -- local defaultAdapters = "opencode"
 local models = {
-  "gpt-5.5",
-  "gpt-5.4-mini",
-  "kimi-k2.6",
-  "glm-5.1",
+  "gpt-5.6-sol",
+  "gpt-5.6-luna",
+  "grok-4.5",
+  "glm-5.2",
+  "deepseek-v4-flash",
 }
-local defaultModel = "gpt-5.5"
-local secondaryModel = "gpt-5.4-mini"
+local defaultModel = "grok-4.5"
+local secondaryModel = "deepseek-v4-flash"
 
 M.keys = {
   {
@@ -53,15 +54,17 @@ M.config = {
       -- llm
       ["llm"] = function()
         -- openai_compatible
+        -- openai_responses
         -- anthropic
-        return require("codecompanion.adapters").extend("openai_responses", {
+        return require("codecompanion.adapters").extend("openai_compatible", {
           name = "llm",
-          -- url = "http://localhost:8090/v1/chat/completions",
-          url = "http://localhost:8090/v1/responses",
+          url = "http://localhost:8317/v1/chat/completions",
+          -- url = "http://localhost:8090/v1/responses",
           env = {
-            api_key = function()
-              return os.getenv("LLM_API_KEY")
-            end,
+            -- api_key = function()
+            --   return os.getenv("LLM_API_KEY")
+            -- end,
+            api_key = "sh-local",
           },
           schema = {
             model = {

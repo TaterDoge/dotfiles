@@ -12,6 +12,9 @@ M.keys = {
 }
 
 M.config = {
+  extensions = {
+    "refactoring",
+  },
   defaults = {
     winblend = 0,
     initial_mode = "insert",

@@ -18,3 +18,13 @@ if vim.g.neovide then
   local neovide = require("utils.neovide")
   neovide.init()
 end
+
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = "*.dart",
+  callback = function()
+    local pubspec = vim.fn.findfile("pubspec.yaml", ".;")
+    if pubspec ~= "" then
+      pcall(vim.cmd, "FlutterReload")
+    end
+  end,
+})
