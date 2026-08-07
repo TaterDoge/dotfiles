@@ -48,3 +48,17 @@ temp/
 #排除目录
 raycast/
 github-copilot/
+
+# herdr managed plugin checkouts (reinstalled via herdr/plugin-sync.sh)
+herdr/plugins/github/
+herdr/plugins/.tmp-install-*/
+herdr/__pycache__/
+
+# tmux plugin manager checkouts (restored by TPM)
+tmux/plugins/
+
+# nested repo — was tracked as a dead gitlink (its remote pointed back to dotfiles)
+opencode/
+
+# zed prompt library lock file (LMDB)
+zed/prompts/prompts-library-db.0.mdb/lock.mdb

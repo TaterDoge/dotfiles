@@ -97,11 +97,6 @@ if status is-interactive
     set -gx PATH /opt/homebrew/sbin $PATH
 end
 
-# >>> grok installer >>>
-fish_add_path $HOME/.grok/bin
-# <<< grok installer <<<
-
-
 # Added by ArcBox: command-line tools and integration
 source "/Users/taterdoge/.arcbox/shell/init.fish" 2>/dev/null; or true
 

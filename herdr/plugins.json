@@ -1,5 +1,57 @@
 [
   {
+    "plugin_id": "herdr-floax",
+    "name": "herdr-floax",
+    "version": "0.2.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Toggle a floating scratch shell (sized popup) for the current workspace, à la tmux-floax.",
+    "manifest_path": "/Users/taterdoge/.config/herdr/plugins/github/herdr-floax-0151ef56c880/herdr-plugin.toml",
+    "plugin_root": "/Users/taterdoge/.config/herdr/plugins/github/herdr-floax-0151ef56c880",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "cargo",
+          "build",
+          "--release"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "toggle",
+        "title": "Toggle floating pane",
+        "description": "Open, reveal, or dismiss the floating scratch shell for this workspace.",
+        "command": [
+          "bash",
+          "scripts/toggle-floating.sh"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "floating",
+        "title": "⌂ floax",
+        "placement": "split",
+        "command": [
+          "./target/release/herdr-floax"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "Tyru5",
+      "repo": "herdr-floax",
+      "resolved_commit": "d6b283110c2e455fb3782595549895a840585e2b",
+      "managed_path": "/Users/taterdoge/.config/herdr/plugins/github/herdr-floax-0151ef56c880",
+      "installed_unix_ms": 1786066516549
+    }
+  },
+  {
     "plugin_id": "herdr-navigator",
     "name": "Herdr Navigator",
     "version": "0.3.5",
@@ -84,9 +136,9 @@
       "kind": "github",
       "owner": "thanhdat77",
       "repo": "herdr-navigator",
-      "resolved_commit": "67cb6d9676532f0d5c3136e785815da712ac9063",
+      "resolved_commit": "8e90917a1a635682e435aa4627c59b3e6f7942b6",
       "managed_path": "/Users/taterdoge/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5",
-      "installed_unix_ms": 1785812597109
+      "installed_unix_ms": 1786070328827
     }
   },
   {
@@ -207,6 +259,56 @@
       "resolved_commit": "c58bfdf01520845583e0033c11c56fc9d21a5424",
       "managed_path": "/Users/taterdoge/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
       "installed_unix_ms": 1785810502683
+    }
+  },
+  {
+    "plugin_id": "ray.plugin-manager",
+    "name": "Plugin Manager",
+    "version": "0.1.0",
+    "min_herdr_version": "0.7.4",
+    "description": "Manage herdr plugins from a popup: list, install, update, enable/disable, uninstall, browse the marketplace, open repo in browser, edit plugins.json",
+    "manifest_path": "/Users/taterdoge/.config/herdr/plugins/github/ray.plugin-manager-75f462e8e1d0/herdr-plugin.toml",
+    "plugin_root": "/Users/taterdoge/.config/herdr/plugins/github/ray.plugin-manager-75f462e8e1d0",
+    "enabled": true,
+    "platforms": [
+      "macos",
+      "linux"
+    ],
+    "actions": [
+      {
+        "id": "open",
+        "title": "Open plugin manager",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bash",
+          "-c",
+          "exec \"${HERDR_BIN_PATH:-herdr}\" plugin pane open --plugin ray.plugin-manager --entrypoint manager --placement popup --focus"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "manager",
+        "title": "Plugin Manager",
+        "placement": "popup",
+        "width": 74,
+        "height": 22,
+        "command": [
+          "bash",
+          "-c",
+          "exec bash \"$HERDR_PLUGIN_ROOT/bin/manager.sh\""
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "speardragon",
+      "repo": "herdr-plugin-manager",
+      "resolved_commit": "b887396d7bd1358afcba595298af7ef352f650d0",
+      "managed_path": "/Users/taterdoge/.config/herdr/plugins/github/ray.plugin-manager-75f462e8e1d0",
+      "installed_unix_ms": 1786070185851
     }
   }
 ]
