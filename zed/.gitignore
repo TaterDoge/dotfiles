@@ -1,0 +1,2 @@
+# zed prompts 数据库锁文件（LMDB，内容会变）
+prompts/prompts-library-db.0.mdb/lock.mdb

@@ -23,3 +23,5 @@ Thumbs.db
 .vscode/
 .idea/
 *.iml
+# fish 备份文件
+*.bak.*

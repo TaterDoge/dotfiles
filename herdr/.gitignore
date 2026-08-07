@@ -1,2 +1,8 @@
+# 运行时状态
 session.json
 *.log
+
+# herdr 管理的插件 checkout（由 plugin-sync.sh 重新安装）
+plugins/github/
+plugins/.tmp-install-*/
+__pycache__/

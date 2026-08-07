@@ -1,0 +1,3 @@
+# 全部忽略（raycast 导出可能含密钥）
+*
+!.gitignore

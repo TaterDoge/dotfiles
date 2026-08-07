@@ -1,1 +1,2 @@
-github-copilot/
+# TPM 管理的插件（tmux.conf 中 @plugin 声明，TPM 自动安装）
+plugins/
