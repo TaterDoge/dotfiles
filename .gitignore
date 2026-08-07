@@ -62,3 +62,6 @@ opencode/
 
 # zed prompt library lock file (LMDB)
 zed/prompts/prompts-library-db.0.mdb/lock.mdb
+
+# fish backup files
+fish/*.bak.*
