@@ -23,6 +23,11 @@ keybind = cmd+j=unbind
 keybind = cmd+k=unbind
 keybind = cmd+l=unbind
 
+# cmd+shift+j/k → ctrl+shift+j/k（CSI-u）转发给 herdr 切 workspace
+# 106='j' 107='k'，5 = ctrl(4)+shift(1)
+keybind = cmd+shift+j=csi:106;5u
+keybind = cmd+shift+k=csi:107;5u
+
 
 # 自定义着色器
 custom-shader = /Users/maobai/.config/ghostty/ghostty-shaders/cursor_blaze.glsl

@@ -1,16 +1,16 @@
 {
   "$schema": "https://raw.githubusercontent.com/TaterDoge/tater/main/settings.schema.json",
-  "model": "custom/gpt-5.6-luna",
+  "model": "custom/deepseek-v4-flash",
   "provider": {
     "custom": {
       "adapter": "openai",
       "options": {
-        "baseURL": "http://localhost:8317/v1",
-        "apiKey": "sk-local"
+        "baseURL": "http://localhost:8090/v1",
+        "apiKey": "ah-f284918488fd98836ea0fead5ba1dc359ba92028b8c677a4347386bc17e31ce6"
       },
       "models": {
-        "gpt-5.6-luna": {
-          "name": "gpt-5.6-luna"
+        "deepseek-v4-flash": {
+          "name": "deepseek-v4-flash"
         }
       }
     }

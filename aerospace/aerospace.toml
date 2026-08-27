@@ -161,7 +161,7 @@ up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
 
 [[on-window-detected]]
-if.app-name-regex-substring = '^(Dia|Google Chrome)$'
+if.app-name-regex-substring = '^(Dia|Google Chrome|Zen)$'
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
