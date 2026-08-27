@@ -54,7 +54,7 @@
   {
     "plugin_id": "herdr-navigator",
     "name": "Herdr Navigator",
-    "version": "0.3.5",
+    "version": "0.3.6",
     "min_herdr_version": "0.7.3",
     "description": "Jump to any Herdr workspace, agent, project, session, remote, directory, or action from one fuzzy navigator.",
     "manifest_path": "/Users/taterdoge/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5/herdr-plugin.toml",
@@ -136,9 +136,9 @@
       "kind": "github",
       "owner": "thanhdat77",
       "repo": "herdr-navigator",
-      "resolved_commit": "8e90917a1a635682e435aa4627c59b3e6f7942b6",
+      "resolved_commit": "b94ef1ea2e042cd82dcd4d60881fcbc5beee6e48",
       "managed_path": "/Users/taterdoge/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5",
-      "installed_unix_ms": 1786070328827
+      "installed_unix_ms": 1786513738576
     }
   },
   {
