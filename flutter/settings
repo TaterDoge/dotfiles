@@ -1,3 +1,5 @@
 {
-  "ios-signing-cert": "Apple Development: taterdoge.email@gmail.com (T4RBB6WAS8)"
+  "ios-signing-cert": "Apple Development: taterdoge.email@gmail.com (T4RBB6WAS8)",
+  "ohos-sdk": "/Users/taterdoge/Library/OpenHarmony/Sdk",
+  "jdk-dir": "/Users/taterdoge/.local/share/mise/installs/java/21.0.2"
 }

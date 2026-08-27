@@ -54,6 +54,9 @@ if status is-interactive
     # 配置终端来初始化 starship -- shell美化工具
     starship init fish | source
 
+    # zoxide -- 智能 cd 工具
+    zoxide init fish | source
+
     function yz
         set tmp (mktemp -t "yazi-cwd.XXXXXX")
         yazi $argv --cwd-file="$tmp"
@@ -99,6 +102,12 @@ end
 
 # Added by ArcBox: command-line tools and integration
 source "/Users/taterdoge/.arcbox/shell/init.fish" 2>/dev/null; or true
+
+# Added by OrbStack: command-line tools and integration
+# This won't be added again if you remove it.
+source ~/.orbstack/shell/init2.fish 2>/dev/null || :
+
+eval (/opt/homebrew/bin/brew shellenv fish)
 
 # >>> otty shell integration >>>
 # Added by Otty — toggle in Settings > Shell > Shell Integration.
