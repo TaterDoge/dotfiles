@@ -1,10 +1,10 @@
-
-# font-blending = "linear" (reset to default)
 theme = "Ayu Dark"
-theme-dark = "Ayu Dark"
+theme-dark = "Nord"
 foreground = "#b3b1ad"
 background = "#0a0e14"
 palette-0 = "#01060e"
+open-with-app = "Xcode|com.apple.dt.Xcode"
+
 palette-1 = "#ea6c73"
 palette-2 = "#91b362"
 palette-3 = "#f9af4f"
@@ -20,63 +20,56 @@ palette-12 = "#59c2ff"
 palette-13 = "#ffee99"
 palette-14 = "#95e6cb"
 # palette-15 = "#eceff4" (reset to default)
+
 # selection-foreground = "#2e3440" (reset to default)
 # selection-background = "#e5e9f0" (reset to default)
 # cursor-color = "#e5e9f0" (reset to default)
 # cursor-text = "#2e3440" (reset to default)
-language = "chinese"
 
-cursor-animation = "smooth"
+# font-blending = "linear" (reset to default)
 
-cursor-style-blink = "always_on"
+details-view = 'id="info"'
+details-view = 'id="outline"'
+details-view = 'id="git"'
+details-view = 'id="files"'
+details-view = 'id="pi" kind="tui" title="Pi" icon="otty" command="cd ${cwd} && pi"'
+
+details-panel-width = 402
+
+# global-hotkey-open-window = "cmd+shift+p" (reset to default)
+
+keybind = "cmd+enter=new_tab"
+keybind = "opt+h=focus_previous_pane"
+keybind = "opt+l=focus_next_pane"
+keybind = "ctrl+opt+h=focus_pane_left"
+keybind = "ctrl+opt+l=focus_pane_right"
+keybind = "cmd+o=unbind"
+keybind = "cmd+shift+h=previous_tab"
+keybind = "cmd+shift+l=next_tab"
+keybind = "cmd+j=unbind"
+keybind = "ctrl+opt+k=focus_pane_up"
+keybind = "ctrl+opt+j=focus_pane_down"
+
+window-layout = "tabs-top"
+
+# auto-hide-tab-bar = "auto" (reset to default)
+
+new-tab-position = "after-current"
+
+# window-size = "frame" (reset to default)
 
 font-family = "Maple Mono NF CN"
 
-text-blink = true
+font-family-bold = "Maple Mono NF CN"
 
-font-size = 14
+font-family-italic = "Maple Mono NF CN"
 
-# palette-15 = "#dbdbdb" (reset to default)
+font-family-bold-italic = "Maple Mono NF CN"
 
-keybind = "cmd+b=toggle_tabs_panel"
-keybind = "cmd+i=toggle_details_panel"
-keybind = "opt+up=move_divider_up"
-keybind = "opt+down=move_divider_down"
-keybind = "opt+left=move_divider_left"
-keybind = "opt+right=move_divider_right"
-keybind = "cmd+shift+j=next_tab"
-keybind = "cmd+shift+k=previous_tab"
-keybind = "cmd+left_bracket=focus_previous_pane"
-keybind = "cmd+right_bracket=focus_next_pane"
-keybind = "opt+k=focus_pane_up"
-keybind = "opt+j=focus_pane_down"
-keybind = "opt+h=focus_pane_left"
-keybind = "opt+l=focus_pane_right"
+cursor-style-blink = "always_on"
 
-# palette-15 = "#dbdbdb" (reset to default)
+cursor-animation = "smooth"
 
-dock-icon-error-badge = false
+font-thicken = true
 
-notification-attention = false
-
-# cursor-color = "#8fb236" (reset to default)
-
-# window-working-directory = "inherit" (reset to default)
-
-# editor-visible-whitespace = true (reset to default)
-
-# editor-visible-whitespace = true (reset to default)
-
-# cursor-style = "bar" (reset to default)
-
-# palette-15 = "#a6adc8" (reset to default)
-
-# editor-vim = true (reset to default)
-
-clipboard-trim-trailing-spaces = true
-
-privilege-notification-on-finish = true
-
-notification-sound = ["finish", "error"]
-
-# window-layout = "tabs-bottom" (reset to default)
+# font-ligatures-alphabet = true (reset to default)

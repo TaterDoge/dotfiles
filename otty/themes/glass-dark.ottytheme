@@ -28,7 +28,7 @@ surface = "#40434b"
 border     = "#6B7286"
 
 [window]
-material   = "glass"
+material   = "vibrancy-regular"
 
 [sidebar]
 background   = "#2528325d"

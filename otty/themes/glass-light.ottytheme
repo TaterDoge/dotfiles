@@ -13,9 +13,9 @@ selection-foreground = "#FAFAFF"
 selection-background = "#AD95E9"
 palette = [
     "#303030", "#A31700", "#0A7F3D", "#AF551D",
-    "#006CD8", "#583CAC", "#00798A", "#e5e5e5",
+    "#006CD8", "#583CAC", "#00798A", "#494949",
     "#8c8c8c", "#A31700", "#0A7F3D", "#AF551D",
-    "#006CD8", "#583CAC", "#00798A", "#cdcdcd",
+    "#006CD8", "#583CAC", "#00798A", "#1C1C1C",
 ]
 
 [token]

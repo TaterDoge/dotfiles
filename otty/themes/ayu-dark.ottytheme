@@ -18,3 +18,11 @@ material = "vibrancy-thin"
 [token]
 secondary = "#c0c0c0"
 tertiary = "#9f9f9f"
+# otty-added: token.font-mono
+font-mono = "Maple Mono NF CN"
+# otty-added: token.font-mono-bold
+font-mono-bold = "Maple Mono NF CN"
+# otty-added: token.font-mono-italic
+font-mono-italic = "Maple Mono NF CN"
+# otty-added: token.font-mono-bold-italic
+font-mono-bold-italic = "Maple Mono NF CN"
