@@ -1,0 +1,14 @@
+{
+  "tools": [
+    "bash",
+    "edit",
+    "fetch",
+    "find",
+    "grep",
+    "read",
+    "task_list",
+    "task_poll",
+    "task_stop",
+    "write"
+  ]
+}
