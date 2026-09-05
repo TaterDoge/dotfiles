@@ -1,6 +1,7 @@
 # 核心工具
 brew "acsandmann/tap/rift" # macOS 平铺式窗口管理器
 brew "bat" # 带语法高亮和 Git 集成的 cat 替代工具
+brew "bottom" # 系统状态 进程状态监控
 brew "cmake" # 跨平台构建系统生成器
 brew "cocoapods" # Cocoa 项目依赖管理器
 brew "docker" # Docker 容器命令行工具
@@ -25,10 +26,13 @@ brew "tree-sitter-cli" # Tree-sitter 解析器生成工具
 brew "uv" # 高性能 Python 包与项目管理器
 brew "yazi" # 高性能终端文件管理器
 brew "zoxide" # 基于使用频率快速跳转目录
+brew "witr" # 进程管理
+brew "FelixKratz/formulae/sketchybar" # 状态栏
+brew "devenjarvis/tap/lathe" # 创建、托管与验证交互式技术教程
 
 
 # Cask 应用
-cask "aerospace" # 类似 i3 的 macOS 平铺式窗口管理器
+cask "nikitabobko/tap/aerospace" # 类似 i3 的 macOS 平铺式窗口管理器
 cask "google-chrome" # google 官方浏览器
 cask "android-studio" # Android 官方集成开发环境
 cask "commandq" # 防止误按 Command-Q 退出应用
@@ -42,8 +46,7 @@ cask "font-maple-mono-nf-cn" # 支持中文和 Nerd Font 图标的 Maple Mono �
 cask "iina" # macOS 开源媒体播放器
 cask "input-source-pro" # 按应用自动切换输入法
 cask "kitty" # GPU 加速终端模拟器
-cask "lathe" # 创建、托管与验证交互式技术教程
-cask "macvimswitch" # 自动切换 macOS 输入法以改善 Vim 使用体验
+cask "Jackiexiao/tap/macvimswitch" # 自动切换 macOS 输入法以改善 Vim 使用体验
 cask "openpencil" # 兼容 Figma 的开源设计编辑器
 cask "qspace-pro" # 多窗格 Finder 替代文件管理器
 cask "vorssaint" # 集防休眠、系统监控和音量混合于一体的菜单栏工具
