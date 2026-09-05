@@ -48,7 +48,7 @@
       "repo": "herdr-floax",
       "resolved_commit": "d6b283110c2e455fb3782595549895a840585e2b",
       "managed_path": "/Users/taterdoge/.config/herdr/plugins/github/herdr-floax-0151ef56c880",
-      "installed_unix_ms": 1786066516549
+      "installed_unix_ms": 1788006438590
     }
   },
   {
@@ -136,15 +136,15 @@
       "kind": "github",
       "owner": "thanhdat77",
       "repo": "herdr-navigator",
-      "resolved_commit": "b94ef1ea2e042cd82dcd4d60881fcbc5beee6e48",
+      "resolved_commit": "9bdf30f03f53730e6232377a3fca3bdc6ed9f3ca",
       "managed_path": "/Users/taterdoge/.config/herdr/plugins/github/herdr-navigator-3a5a6fa5dfb5",
-      "installed_unix_ms": 1786513738576
+      "installed_unix_ms": 1788012538179
     }
   },
   {
     "plugin_id": "herdr-splits",
     "name": "Herdr Splits",
-    "version": "0.5.2",
+    "version": "0.5.3",
     "min_herdr_version": "0.7.0",
     "description": "Seamless navigation and resizing between Herdr panes and Neovim splits",
     "manifest_path": "/Users/taterdoge/.config/herdr/plugins/github/herdr-splits-d880c4924f2b/herdr-plugin.toml",
@@ -256,15 +256,15 @@
       "kind": "github",
       "owner": "lmilojevicc",
       "repo": "herdr-splits.nvim",
-      "resolved_commit": "c58bfdf01520845583e0033c11c56fc9d21a5424",
+      "resolved_commit": "94f30cf4e9ac76ddf185a3acd0977be728fa4106",
       "managed_path": "/Users/taterdoge/.config/herdr/plugins/github/herdr-splits-d880c4924f2b",
-      "installed_unix_ms": 1785810502683
+      "installed_unix_ms": 1787931073746
     }
   },
   {
     "plugin_id": "ray.plugin-manager",
     "name": "Plugin Manager",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "min_herdr_version": "0.7.4",
     "description": "Manage herdr plugins from a popup: list, install, update, enable/disable, uninstall, browse the marketplace, open repo in browser, edit plugins.json",
     "manifest_path": "/Users/taterdoge/.config/herdr/plugins/github/ray.plugin-manager-75f462e8e1d0/herdr-plugin.toml",
@@ -293,8 +293,8 @@
         "id": "manager",
         "title": "Plugin Manager",
         "placement": "popup",
-        "width": 74,
-        "height": 22,
+        "width": 82,
+        "height": 28,
         "command": [
           "bash",
           "-c",
@@ -306,9 +306,217 @@
       "kind": "github",
       "owner": "speardragon",
       "repo": "herdr-plugin-manager",
-      "resolved_commit": "b887396d7bd1358afcba595298af7ef352f650d0",
+      "resolved_commit": "3b1f6e1be4ad811e39e4fecb24cd3a976b692241",
       "managed_path": "/Users/taterdoge/.config/herdr/plugins/github/ray.plugin-manager-75f462e8e1d0",
-      "installed_unix_ms": 1786070185851
+      "installed_unix_ms": 1788006468862
+    }
+  },
+  {
+    "plugin_id": "tab-smart-rename",
+    "name": "Smart Rename",
+    "version": "0.2.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Context-aware names for Herdr workspaces and task tabs.",
+    "manifest_path": "/Users/taterdoge/.config/herdr/plugins/github/tab-smart-rename-c4dbca297d1d/herdr-plugin.toml",
+    "plugin_root": "/Users/taterdoge/.config/herdr/plugins/github/tab-smart-rename-c4dbca297d1d",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "build": [
+      {
+        "command": [
+          "bun",
+          "install",
+          "--production",
+          "--frozen-lockfile"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "check-ai",
+        "title": "Smart Rename: check AI config",
+        "description": "Validate the provider and naming prompt without making a request.",
+        "contexts": [
+          "global",
+          "workspace",
+          "tab",
+          "pane"
+        ],
+        "command": [
+          "bun",
+          "src/cli.ts",
+          "check-ai"
+        ]
+      },
+      {
+        "id": "configure-ai",
+        "title": "Smart Rename: configure AI",
+        "description": "Open the private AI provider configuration.",
+        "contexts": [
+          "global",
+          "workspace",
+          "tab",
+          "pane"
+        ],
+        "command": [
+          "bun",
+          "src/cli.ts",
+          "configure-ai"
+        ]
+      },
+      {
+        "id": "configure-prompt",
+        "title": "Smart Rename: configure prompt",
+        "description": "Open the private naming prompt.",
+        "contexts": [
+          "global",
+          "workspace",
+          "tab",
+          "pane"
+        ],
+        "command": [
+          "bun",
+          "src/cli.ts",
+          "configure-prompt"
+        ]
+      },
+      {
+        "id": "rename-all",
+        "title": "Smart Rename: all tabs",
+        "description": "Reclaim and rename every tab sequentially.",
+        "contexts": [
+          "global",
+          "workspace",
+          "tab",
+          "pane"
+        ],
+        "command": [
+          "bun",
+          "src/cli.ts",
+          "all"
+        ]
+      },
+      {
+        "id": "rename-now",
+        "title": "Smart Rename: current tab",
+        "description": "Reclaim and rename the current tab now.",
+        "contexts": [
+          "workspace",
+          "tab",
+          "pane"
+        ],
+        "command": [
+          "bun",
+          "src/cli.ts",
+          "rename-now"
+        ]
+      },
+      {
+        "id": "reset-tab",
+        "title": "Smart Rename: reset tab",
+        "description": "Clear the current tab's manual lock and evaluate it.",
+        "contexts": [
+          "tab",
+          "pane"
+        ],
+        "command": [
+          "bun",
+          "src/cli.ts",
+          "reset-tab"
+        ]
+      },
+      {
+        "id": "reset-workspace",
+        "title": "Smart Rename: reset workspace",
+        "description": "Clear the current workspace's manual lock and evaluate it.",
+        "contexts": [
+          "workspace",
+          "tab",
+          "pane"
+        ],
+        "command": [
+          "bun",
+          "src/cli.ts",
+          "reset-workspace"
+        ]
+      },
+      {
+        "id": "start",
+        "title": "Smart Rename: start",
+        "description": "Start the detached Smart Rename worker.",
+        "contexts": [
+          "global",
+          "workspace"
+        ],
+        "command": [
+          "bun",
+          "src/cli.ts",
+          "start"
+        ]
+      },
+      {
+        "id": "status",
+        "title": "Smart Rename: status",
+        "description": "Report worker status.",
+        "contexts": [
+          "global",
+          "workspace"
+        ],
+        "command": [
+          "bun",
+          "src/cli.ts",
+          "status"
+        ]
+      },
+      {
+        "id": "stop",
+        "title": "Smart Rename: stop",
+        "description": "Stop the Smart Rename worker.",
+        "contexts": [
+          "global",
+          "workspace"
+        ],
+        "command": [
+          "bun",
+          "src/cli.ts",
+          "stop"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "prompt-config",
+        "title": "Smart Rename Prompt",
+        "description": "Edit the private naming prompt.",
+        "placement": "overlay",
+        "command": [
+          "bun",
+          "src/configure.ts",
+          "prompt"
+        ]
+      },
+      {
+        "id": "provider-config",
+        "title": "Smart Rename AI",
+        "description": "Edit the private OpenAI-compatible provider configuration.",
+        "placement": "overlay",
+        "command": [
+          "bun",
+          "src/configure.ts"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "iurysza",
+      "repo": "herdr-tab-smart-rename",
+      "resolved_commit": "b646cc32799801a23cc9b23d298879e602037e2b",
+      "managed_path": "/Users/taterdoge/.config/herdr/plugins/github/tab-smart-rename-c4dbca297d1d",
+      "installed_unix_ms": 1787930103723
     }
   }
 ]
