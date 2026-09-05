@@ -51,3 +51,4 @@ configstore/
 # nested repo — was tracked as a dead gitlink (its remote pointed back to dotfiles);
 # rule stays here because git does not read .gitignore files inside ignored dirs
 opencode/
+flutter/

@@ -42,7 +42,6 @@ if status is-interactive
     set -gx PATH $HOME/.bun/bin $PATH
 
     # 配置安卓环境
-    set -gx JAVA_HOME /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
     set -gx ANDROID_HOME $HOME/Library/Android/sdk
     set -gx PATH $ANDROID_HOME/platform-tools $PATH
     set -gx PATH $ANDROID_HOME/emulator $PATH
@@ -100,19 +99,8 @@ if status is-interactive
     set -gx PATH /opt/homebrew/sbin $PATH
 end
 
-# Added by ArcBox: command-line tools and integration
-source "/Users/taterdoge/.arcbox/shell/init.fish" 2>/dev/null; or true
-
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.
 source ~/.orbstack/shell/init2.fish 2>/dev/null || :
 
 eval (/opt/homebrew/bin/brew shellenv fish)
-
-# >>> otty shell integration >>>
-# Added by Otty — toggle in Settings > Shell > Shell Integration.
-# Inert unless launched by Otty (it sets $OTTY_SHELL_INTEGRATION).
-if test -n "$OTTY_SHELL_INTEGRATION" -a -r "$OTTY_SHELL_INTEGRATION/otty-integration.fish"
-    source "$OTTY_SHELL_INTEGRATION/otty-integration.fish"
-end
-# <<< otty shell integration <<<
