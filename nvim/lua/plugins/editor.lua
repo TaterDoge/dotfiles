@@ -77,6 +77,7 @@ return {
   -- 浮动终端 https://github.com/nvzone/floaterm
   {
     "nvzone/floaterm",
+    enabled = false,
     dependencies = "nvzone/volt",
     keys = {
       {
@@ -98,6 +99,13 @@ return {
       },
     },
     cmd = "FloatermToggle",
+  },
+
+  {
+    "akinsho/toggleterm.nvim",
+    version = "*",
+    config = true,
+    opts = require("config/editor/toggleterm").config,
   },
 
   -- markdown 预览

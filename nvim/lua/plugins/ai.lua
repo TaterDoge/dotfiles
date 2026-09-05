@@ -1,6 +1,6 @@
 return {
   {
-    name = "sidekick.nvim",
+    "folke/sidekick.nvim",
     keys = require("config.ai.sidekick").keys,
     dir = "/Users/taterdoge/github/sidekick.nvim",
     opts = {
@@ -74,6 +74,7 @@ return {
 
   {
     "sudo-tee/opencode.nvim",
+    enabled = false,
     config = function()
       require("opencode").setup({
         preferred_picker = "snacks",

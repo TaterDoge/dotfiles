@@ -1,4 +1,6 @@
-return {
+local M = {}
+
+M.config = {
   open_mapping = [[<C-\>]],
   -- direction = "horizontal",
   direction = "float",
@@ -17,3 +19,5 @@ return {
     border = "curved",
   },
 }
+
+return M
