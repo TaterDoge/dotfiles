@@ -264,7 +264,7 @@
   {
     "plugin_id": "ray.plugin-manager",
     "name": "Plugin Manager",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "min_herdr_version": "0.7.4",
     "description": "Manage herdr plugins from a popup: list, install, update, enable/disable, uninstall, browse the marketplace, open repo in browser, edit plugins.json",
     "manifest_path": "/Users/taterdoge/.config/herdr/plugins/github/ray.plugin-manager-75f462e8e1d0/herdr-plugin.toml",
@@ -306,9 +306,9 @@
       "kind": "github",
       "owner": "speardragon",
       "repo": "herdr-plugin-manager",
-      "resolved_commit": "3b1f6e1be4ad811e39e4fecb24cd3a976b692241",
+      "resolved_commit": "abba90a6b8cc414cbc70e76e7bf4ff721c7a9bf9",
       "managed_path": "/Users/taterdoge/.config/herdr/plugins/github/ray.plugin-manager-75f462e8e1d0",
-      "installed_unix_ms": 1788006468862
+      "installed_unix_ms": 1788581069875
     }
   },
   {

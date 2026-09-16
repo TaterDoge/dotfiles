@@ -65,4 +65,11 @@ return {
         and vim.bo[buf].filetype ~= "blink-cmp-menu"
     end,
   },
+  picker = {
+    sources = {
+      files = {
+        exclude = { "node_modules", "dist", "build" },
+      },
+    },
+  },
 }
