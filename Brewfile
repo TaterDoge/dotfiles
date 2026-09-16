@@ -28,7 +28,6 @@ brew "yazi" # 高性能终端文件管理器
 brew "zoxide" # 基于使用频率快速跳转目录
 brew "witr" # 进程管理
 brew "FelixKratz/formulae/sketchybar" # 状态栏
-brew "devenjarvis/tap/lathe" # 创建、托管与验证交互式技术教程
 
 
 # Cask 应用
