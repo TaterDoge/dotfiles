@@ -41,7 +41,7 @@ local cal = sbar.add("item", "widgets.calendar", {
 
 local bracket = sbar.add("bracket", "widgets.calendar.bracket", { cal.name }, {
 	background = { color = colors[appearance].orange_bg, border_width = 0 },
-	shadow = true,
+	shadow = false,
 })
 
 bracket:subscribe("apperace_change", function(env)

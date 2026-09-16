@@ -1,6 +1,6 @@
 require("items.widgets.calendar")
 require("items.widgets.wifi")
--- require("items.widgets.codeplan")
+require("items.widgets.tokenplan")
 
 local colors = require("colors")
 

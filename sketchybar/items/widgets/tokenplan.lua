@@ -26,10 +26,12 @@ local bar_height = 8
 local widget_width = 112
 local widget_bar_height = 5
 
+local dashboard_url = "https://dash.x-aio.com/dashboard/tokens-plan"
+
 local codeplan_status = sbar.add("item", "widgets.codeplan.status", {
 	position = "right",
 	width = 0,
-	update_freq = 60,
+	update_freq = 300,
 	y_offset = 4,
 	icon = {
 		string = "--/--",
@@ -162,22 +164,25 @@ local function set_bar_percent(label_item, bar_item, percent)
 	label_item:set({ label = { string = percent_value .. "%" } })
 end
 
-local function format_number(value, decimals)
+-- 40510 -> "40.5k", 300000 -> "300k", 1200000 -> "1.2M"
+local function format_credits(value)
 	value = tonumber(value) or 0
-	decimals = decimals or 0
-	if decimals == 0 then
-		return string.format("%.0f", value)
+	if value >= 1000000 then
+		return (string.format("%.2f", value / 1000000):gsub("%.?0+$", "")) .. "M"
 	end
-	return string.format("%." .. decimals .. "f", value):gsub("(%..-)0+$", "%1"):gsub("%.$", "")
+	if value >= 1000 then
+		return (string.format("%.1f", value / 1000):gsub("%.0$", "")) .. "k"
+	end
+	return string.format("%.0f", value)
 end
 
--- ── Section: Current Session ──────────────────────────────────────────
+-- ── Section: current billing period ───────────────────────────────────
 
 popup_spacer("spacer_0")
 
 local session_label = popup_item("session_label", {
 	icon = {
-		string = "4h Calls",
+		string = "Credits",
 		color = palette().magenta,
 		width = popup_width / 2,
 		font = {
@@ -225,7 +230,19 @@ local session_bar = popup_item("session_bar", {
 local session_reset = popup_item("session_reset", {
 	icon = { drawing = false },
 	label = {
-		string = "Resets: --",
+		string = "Used: --",
+		color = palette().grey,
+		font = {
+			family = settings.font.numbers,
+			size = 13.0,
+		},
+	},
+})
+
+local plan_label = popup_item("plan_label", {
+	icon = { drawing = false },
+	label = {
+		string = "",
 		color = palette().grey,
 		font = {
 			family = settings.font.numbers,
@@ -237,7 +254,7 @@ local session_reset = popup_item("session_reset", {
 local link = popup_item("link", {
 	icon = { drawing = false },
 	label = {
-		string = "open CodePlan dashboard ",
+		string = "open dashboard  ",
 		color = palette().grey,
 		font = {
 			family = settings.font.numbers,
@@ -245,98 +262,42 @@ local link = popup_item("link", {
 		},
 	},
 	align = "right",
-	click_script = "open https://code.x-aio.com/dashboard",
-})
-
-local auth_click_script = [[
-token=$(osascript \
-  -e 'try' \
-  -e 'display dialog "Paste X-AIO auth token:" default answer "" with hidden answer buttons {"Cancel", "Save"} default button "Save" cancel button "Cancel"' \
-  -e 'text returned of result' \
-  -e 'on error number -128' \
-  -e 'return ""' \
-  -e 'end try')
-if [ -n "$token" ]; then
-  umask 077
-  mkdir -p "$HOME/.local/share/sketchybar"
-  printf '%s' "$token" > "$HOME/.local/share/sketchybar/x-aio-auth-token"
-  sketchybar --trigger codeplan_token_updated
-fi
-]]
-
-local token_action = popup_item("token_action", {
-	icon = { drawing = false },
-	label = {
-		string = "set auth token ",
-		color = palette().green,
-		font = {
-			family = settings.font.numbers,
-			size = 16.0,
-		},
-	},
-	align = "right",
-	click_script = auth_click_script,
+	click_script = "open " .. dashboard_url,
 })
 
 popup_spacer("spacer_1")
 
--- ── Toggle / Collapse ─────────────────────────────────────────────────
+-- ── Data source ───────────────────────────────────────────────────────
+-- helpers/xaio_usage.sh pulls the auth token out of Chrome's cookie jar and
+-- prints the credit_plan/account JSON, so the user never pastes a token:
+-- being logged in to dash.x-aio.com in Chrome is enough.
 
-local auth_token_file = os.getenv("HOME") .. "/.local/share/sketchybar/x-aio-auth-token"
-
-local function read_auth_token()
-	local f = io.open(auth_token_file, "r")
-	if f then
-		local token = trim(f:read("*a"))
-		f:close()
-		if token ~= "" then
-			return token
-		end
-	end
-	return nil
-end
-
-local function shell_quote(value)
-	return "'" .. tostring(value):gsub("'", "'\\''") .. "'"
-end
+local usage_script = "$HOME/.config/sketchybar/helpers/xaio_usage.sh"
 
 local function get_xaio_usage(callback)
-	local auth_token = read_auth_token()
-	if not auth_token then
-		callback({ error = "Missing auth token" })
-		return
-	end
-
-	local cmd = '/usr/bin/curl -s "https://dashboard.x-aio.com/api/code_plan_usage/call_quota" '
-		.. "-X POST "
-		.. '-H "accept: application/json" '
-		.. '-H "content-type: application/json" '
-		.. '-H "origin: https://code.x-aio.com" '
-		.. '-H "referer: https://code.x-aio.com/" '
-		.. "-H "
-		.. shell_quote("Authorization: Bearer " .. auth_token)
-
-	sbar.exec(cmd, function(result)
-		if type(result) ~= "table" then
-			callback({ error = "Invalid response" })
-			return
-		end
-
-		if result.code ~= "200" then
-			callback({ error = result.message or "Request failed" })
+	sbar.exec(usage_script, function(result)
+		if type(result) ~= "table" or result.code ~= "200" then
+			local message = type(result) == "table" and result.message or nil
+			callback({ error = message or "Login to dash.x-aio.com" })
 			return
 		end
 
 		local data = type(result.data) == "table" and result.data or {}
-		local four_hours_call_count = tonumber(data.four_hours_call_count) or 0
-		local four_hours_call_quota = tonumber(data.four_hours_call_quota) or 0
+		local quota = tonumber(data.base_quota) or 0
+		local remaining = tonumber(data.base_balance) or 0
+		local used = math.max(0, quota - remaining)
+		local plan = type(data.current_plan) == "table" and data.current_plan or {}
 
 		callback({
-			four_hours_call_count = four_hours_call_count,
-			four_hours_call_quota = four_hours_call_quota,
-			four_hours_percent = four_hours_call_quota > 0 and math.floor(
-				four_hours_call_count / four_hours_call_quota * 100 + 0.5
-			) or 0,
+			quota = quota,
+			used = used,
+			remaining = remaining,
+			percent = quota > 0 and math.floor(used / quota * 100 + 0.5) or 0,
+			plan = plan.plan_level_name,
+			period = plan.plan_period_name,
+			reset = tostring(data.next_reset_time or data.current_period_end or "")
+				:gsub("T", " ")
+				:sub(1, 16),
 		})
 	end)
 end
@@ -378,20 +339,18 @@ local function apply_widget_usage(result)
 		y_offset = 4,
 		icon = {
 			drawing = true,
-			string = format_number(result.four_hours_call_count, 2) .. "/" .. format_number(
-				result.four_hours_call_quota
-			),
+			string = format_credits(result.used) .. "/" .. format_credits(result.quota),
 			width = 76,
 			color = c.green,
 		},
 		label = {
-			string = result.four_hours_percent .. "%",
+			string = result.percent .. "%",
 			width = 36,
 			align = "right",
 			color = c.green,
 		},
 	})
-	local used_width = percent_width(result.four_hours_percent, widget_width)
+	local used_width = percent_width(result.percent, widget_width)
 	codeplan_progress_fill:set({
 		width = used_width,
 		background = { color = c.green },
@@ -420,20 +379,26 @@ local function apply_popup_result(result)
 		session_label:set({ label = { string = "Login" } })
 		session_bar:set({ icon = { width = 0 } })
 		session_reset:set({ label = { string = result.error } })
-		token_action:set({ label = { string = "set auth token ", color = c.green } })
+		plan_label:set({ label = { string = "click to open dashboard" } })
 		return
 	end
 
 	local c = palette()
-	set_bar_percent(session_label, session_bar, result.four_hours_percent)
+	set_bar_percent(session_label, session_bar, result.percent)
 	session_reset:set({
 		label = {
-			string = "Used: " .. format_number(result.four_hours_call_count, 2) .. " / " .. format_number(
-				result.four_hours_call_quota
-			),
+			string = "Used: " .. format_credits(result.used) .. " / " .. format_credits(result.quota),
 		},
 	})
-	token_action:set({ label = { string = "update auth token ", color = c.grey } })
+	plan_label:set({
+		label = {
+			string = trim(
+				table.concat({ result.plan or "", result.period or "" }, " ")
+					.. (result.reset ~= "" and ("  ·  resets " .. result.reset) or "")
+			),
+			color = c.grey,
+		},
+	})
 end
 
 local function update_usage()
@@ -473,17 +438,14 @@ codeplan_bracket:subscribe("apperace_change", function()
 			background = { color = colors.with_alpha(c.magenta, 0.2) },
 		})
 		session_reset:set({ label = { color = c.grey } })
+		plan_label:set({ label = { color = c.grey } })
 		link:set({ label = { color = c.grey } })
-		token_action:set({ label = { color = c.green } })
 	end)
 end)
 
 popup_open = function()
 	return codeplan_bracket:query().popup.drawing == "on"
 end
-
-sbar.add("event", "codeplan_token_updated")
-codeplan_separator:subscribe("codeplan_token_updated", update_usage)
 
 codeplan_status:subscribe({ "forced", "routine", "system_woke" }, function()
 	update_usage()
@@ -511,7 +473,7 @@ local function codeplan_status_click()
 		codeplan_toggle()
 		return
 	end
-	sbar.exec(auth_click_script)
+	sbar.exec("open " .. dashboard_url)
 end
 
 codeplan_separator:subscribe("mouse.clicked", codeplan_toggle)
