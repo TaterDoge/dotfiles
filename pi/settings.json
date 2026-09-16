@@ -1,0 +1,25 @@
+{
+  "lastChangelogVersion": "0.85.1",
+  "theme": "ayu-dark",
+  "packages": [
+    "npm:pi-web-access",
+    "npm:pi-subagents",
+    "npm:pi-lens",
+    "npm:@dietrichgebert/ponytail",
+    "npm:pi-mcp-adapter",
+    "npm:context-mode",
+    "npm:pi-tool-display",
+    "npm:pi-chrome",
+    "npm:pi-caveman",
+    "npm:@taterdoge/pi-ayu",
+    "npm:@taterdoge/pi-status",
+    "npm:@taterdoge/pi-remember-model",
+    "npm:@plannotator/pi-extension",
+    "npm:pi-workspace-history",
+    "npm:billion-context-pi"
+  ],
+  "hideThinkingBlock": true,
+  "defaultProvider": "custom",
+  "defaultModel": "deepseek-v4.1-flash",
+  "defaultThinkingLevel": "high"
+}
