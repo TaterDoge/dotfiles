@@ -62,23 +62,17 @@ app_rules = [
   { app_name = "Kitty", workspace = 1 },
   { app_name = "Ghostty", workspace = 1 },
   { app_name = "Tabby", workspace = 1 },
-  { app_name = "Figma", workspace = 2 },
-  { app_name = "Codex", workspace = 2 },
+  { app_name = "Figma", workspace = 3 },
   { app_name = "钉钉", workspace = 3 },
   { app_name = "QSpace Pro", floating = true },
-  { app_name = "lazyTrans", floating = true },
-  { app_name = "pot", floating = true },
   { app_name = "FlClash", floating = true },
-  { app_name = "Alma", floating = true },
-  { app_name = "Tater", floating = true },
-  { app_name = "LazyTrans", floating = true },
+  { app_name = "Cherry Studio", floating = true },
   { app_name = "微信", floating = true },
   { app_name = "设置", floating = true },
+  { app_name = "MuMu", floating = true },
 ]
 
 [keys]
-# --- App Launch Shortcuts (ref: QSpace Pro uses ⌥Space for Alma) ---
-"Option + Space" = { exec = ["/bin/bash", "-c", "open -a Alma"] }
 "Meta + E" = { exec = [
   "/bin/bash",
   "-c",
