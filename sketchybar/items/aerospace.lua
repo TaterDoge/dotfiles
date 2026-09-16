@@ -218,7 +218,7 @@ local front_app_bracket = sbar.add("bracket", "front_app.bracket", {
 		border_width = 0,
 	},
 	width = "dynamic",
-	shadow = true,
+	shadow = false,
 })
 
 front_app:subscribe("front_app_switched", function(env)
