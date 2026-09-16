@@ -1,5 +1,5 @@
 {
   "ios-signing-cert": "Apple Development: taterdoge.email@gmail.com (T4RBB6WAS8)",
-  "ohos-sdk": "/Applications/DevEco-Studio.app/Contents/sdk/default",
+  "ohos-sdk": "/Applications/DevEco-Studio.app/Contents/sdk",
   "jdk-dir": "/Users/taterdoge/.local/share/mise/installs/java/21.0.2"
 }
