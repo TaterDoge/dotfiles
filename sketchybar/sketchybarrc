@@ -1,4 +1,12 @@
 #!/usr/bin/env lua
 
+-- riftapi: native Mach bindings for rift-wm
+package.cpath = package.cpath .. ";" .. os.getenv("HOME") .. "/.local/share/rift.lua/?.so"
+package.path = os.getenv("HOME")
+	.. "/.config/sketchybar/?.lua;"
+	.. os.getenv("HOME")
+	.. "/.config/sketchybar/?/init.lua;"
+	.. package.path
+
 -- Load the sketchybar-package and prepare the helper binaries
 require("init")

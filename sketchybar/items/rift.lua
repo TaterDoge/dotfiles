@@ -1,5 +1,6 @@
 local colors = require("colors")
 local settings = require("settings")
+local rift = require("riftapi")
 
 local workspace_numbers = { "1", "2", "3", "4", "5", "6" }
 local workspace_colors = {
@@ -27,6 +28,9 @@ local workspace_gap = 6
 
 local handle = io.popen("defaults read -g AppleInterfaceStyle 2>/dev/null || echo 'Light'")
 local output = handle and handle:read("*a"):match("^%s*(.-)%s*$"):lower() or "light"
+if handle then
+	handle:close()
+end
 local appearance = output
 
 sbar.add("event", "rift_workspace_change")
@@ -62,46 +66,24 @@ local function setWorkspaceStyle(index, is_active)
 	})
 end
 
+-- riftapi native Mach query; no shell spawn, survives rift restarts
 local function updateActiveWorkspace()
-	sbar.exec("rift-cli query workspaces", function(rift_data)
-		if not rift_data or #rift_data == 0 then
-			for i = 1, max_spaces do
-				setWorkspaceStyle(i, false)
-			end
-			return
-		end
-
-		local active_index = nil
-		if type(rift_data) == "table" then
-			for i, workspace in ipairs(rift_data) do
-				if workspace.is_active then
-					active_index = i
-					break
-				end
-			end
-		else
-			local zero_based_index = tostring(rift_data):match('"index"%s*:%s*(%d+)%s*,%s*"is_active"%s*:%s*true')
-			active_index = zero_based_index and (tonumber(zero_based_index) + 1) or nil
-		end
-
-		sbar.animate("tanh", 10, function()
-			for i = 1, max_spaces do
-				setWorkspaceStyle(i, i == active_index)
-			end
-		end)
-	end)
-end
-
-local function updateActiveWorkspaceFromEnv(env)
-	local zero_based_index = tonumber(env.RIFT_WORKSPACE_INDEX)
-	if not zero_based_index then
-		updateActiveWorkspace()
+	local workspaces, err = rift.query.workspaces()
+	if not workspaces then
 		return
+	end
+
+	local active_index = nil
+	for i, workspace in ipairs(workspaces) do
+		if workspace.is_active then
+			active_index = i
+			break
+		end
 	end
 
 	sbar.animate("tanh", 10, function()
 		for i = 1, max_spaces do
-			setWorkspaceStyle(i, i == zero_based_index + 1)
+			setWorkspaceStyle(i, i == active_index)
 		end
 	end)
 end
@@ -134,8 +116,6 @@ for i = 1, max_spaces do
 			height = 26,
 			corner_radius = 5,
 		},
-		click_script = "rift-cli execute workspace switch " .. (i - 1), -- rift uses 0-based indexing
-		drawing = true,
 		updates = true,
 		width = 26,
 		padding_right = 0,
@@ -143,6 +123,11 @@ for i = 1, max_spaces do
 	})
 
 	spaces[i] = space
+
+	-- native Mach call, no shell spawn
+	space:subscribe("mouse.clicked", function()
+		rift.workspace.switch(i - 1)
+	end)
 
 	workspace_spacers[i] = sbar.add("item", "rift_space_gap." .. i, {
 		position = "left",
@@ -209,15 +194,14 @@ front_app:subscribe("front_app_switched", function(env)
 	})
 end)
 
--- Event handling
+-- Event handling: rift-cli subscriptions in ~/.config/rift/config.toml
+-- trigger this event on workspace_changed / windows_changed.
 local rift_observer = sbar.add("item", {
 	drawing = false,
 	updates = true,
 })
 
-rift_observer:subscribe("rift_workspace_change", function(env)
-	updateActiveWorkspaceFromEnv(env)
-end)
+rift_observer:subscribe("rift_workspace_change", updateActiveWorkspace)
 
 -- Create bracket with all spaces
 local space_names = {}
@@ -237,7 +221,7 @@ local bracket = sbar.add("bracket", "items.spaces.bracket", space_names, {
 })
 
 -- Appearance change handling
-bracket:subscribe("apperace_change", function(env)
+bracket:subscribe("apperace_change", function(_)
 	sbar.exec("defaults read -g AppleInterfaceStyle 2>/dev/null || echo 'Light'", function(theme)
 		local new_appearance = theme:match("^%s*(.-)%s*$"):lower()
 		appearance = new_appearance
@@ -260,10 +244,6 @@ bracket:subscribe("apperace_change", function(env)
 					color = colors.transparent,
 				},
 			})
-
-			for index, _ in ipairs(spaces) do
-				setWorkspaceStyle(index, false)
-			end
 		end)
 
 		updateActiveWorkspace()

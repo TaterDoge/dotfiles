@@ -5,7 +5,10 @@ config-version = 2
 
 # You can use it to add commands that run after AeroSpace startup.
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
-after-startup-command = ['exec-and-forget sketchybar']
+# sketchybar runs under `brew services` (KeepAlive=true) — do not spawn it
+# from AeroSpace; spawning while it is already running re-executes the config
+# on the live bar and breaks event subscriptions.
+after-startup-command = ['exec-and-forget brew services restart sketchybar']
 
 exec-on-workspace-change = [
   '/bin/bash',
