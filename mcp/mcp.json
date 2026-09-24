@@ -10,6 +10,10 @@
         "--mcp"
       ],
       "lifecycle": "lazy"
+    },
+    "pikpak": {
+      "url": "https://pikpak.ai/mcp",
+      "auth": "oauth"
     }
   }
 }
