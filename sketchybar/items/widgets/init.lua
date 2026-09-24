@@ -1,6 +1,7 @@
 require("items.widgets.calendar")
+require("items.widgets.batterry")
 require("items.widgets.wifi")
-require("items.widgets.tokenplan")
+require("items.widgets.codeplan")
 
 local colors = require("colors")
 
@@ -8,6 +9,7 @@ sbar.add("bracket", "items.right.panel", {
 	"widgets.codeplan.bracket",
 	"widgets.wifi.bracket",
 	"widgets.calendar.bracket",
+	"widgets.battery.bracket",
 }, {
 	background = {
 		color = colors.dark.bar.transparent,
