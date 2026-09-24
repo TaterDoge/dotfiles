@@ -64,6 +64,9 @@ return {
   {
     "NeogitOrg/neogit",
     opts = {},
+    keys = {
+      { "<leader>gG", "<cmd>Neogit<cr>", desc = "open neogit" },
+    },
     dependencies = {
       "nvim-lua/plenary.nvim", -- required
       "sindrets/diffview.nvim", -- optional - Diff integration
